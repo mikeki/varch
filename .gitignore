@@ -1,7 +1,0 @@
-.bundle
-db/*.sqlite3
-log/*.log
-tmp/
-/public/system/*
-/spec/tmp/*
-.DS_STORE
