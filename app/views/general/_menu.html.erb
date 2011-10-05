@@ -1,0 +1,26 @@
+<% if current_user %>
+	<h3 id="menuTitulo"><%= current_user.nombre %></h3>
+<% else %>
+	<h3 id="menuTitulo">Menú</h3>
+<% end %>
+<ul class="botones">
+<li><%=link_to "Inicio", root_path, :class=>"botones "+(@tab=="home"? "botonon" : "botonoff")%></li>
+<li><%=link_to "Lista de Problemas", '#', :class=>"botones "+(@tab=="listaP"? "botonon" : "botonoff")%></li>
+<% if current_user %>
+  <li><%=link_to "Subir Solución", '#', :class=>"botones "+(@tab=="newA"? "botonon" : "botonoff")%></li>
+  <li><%=link_to "Editar Perfil", edit_user_path, :class=>"botones "+(@tab=="editU"? "botonon" : "botonoff")%></li>
+  <li><%=link_to "Historial", '#', :class=>"botones "+(@tab=="hist"? "botonon" : "botonoff")%></li>
+  <%if current_user %>
+    <li><%=link_to "Crear Problema", '#', :class=>"botones "+(@tab=="newP"? "botonon" : "botonoff")%></li>
+    <li><%=link_to "Grupos", '#', :class=>"botones "+(@tab=="listaG"? "botonon" : "botonoff")%></li>
+  <%end%>
+  <%if current_user%>
+    <li><%=link_to "Administrar", '#', :class=>"botones "+(@tab=="admin"? "botonon" : "botonoff")%></li>
+  <%end%>
+    <li><%=link_to "Salir", logout_path, :class=>"botones botonoff"%></li>
+<% else %>
+<li><%=link_to "Entrar", login_path, :class=>"botones "+(@tab=="entrar"? "botonon" : "botonoff")%></li>
+<li><%=link_to "Registro", new_user_path, :class=>"botones "+(@tab=="registroU"? "botonon" : "botonoff")%></li>
+<%end%>
+</ul>
+
