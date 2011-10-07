@@ -5,8 +5,6 @@
     <th>Email</th>
     <th>First name</th>
     <th>Last name</th>
-    <th>Password hash</th>
-    <th>Password salt</th>
     <th></th>
     <th></th>
     <th></th>
@@ -17,8 +15,6 @@
     <td><%= user.email %></td>
     <td><%= user.first_name %></td>
     <td><%= user.last_name %></td>
-    <td><%= user.password_hash %></td>
-    <td><%= user.password_salt %></td>
     <td><%= link_to 'Show', user %></td>
     <td><%= link_to 'Edit', edit_user_path(user) %></td>
     <td><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>

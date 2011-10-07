@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @exercise.name %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @exercise.description %>
+</p>
+
+<p>
+  <b>Similarity avarage:</b>
+  <%= @exercise.similarity_avarage %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= @exercise.user_id %>
+</p>
+
+<p>
+  <b>Course:</b>
+  <%= @exercise.course_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_exercise_path(@exercise) %> |
+<%= link_to 'Back', exercises_path %>

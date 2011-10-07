@@ -10,7 +10,41 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111005034817) do
+ActiveRecord::Schema.define(:version => 20111007162417) do
+
+  create_table "courses", :force => true do |t|
+    t.string   "name"
+    t.string   "courseid"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "exercises", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.float    "similarity_avarage"
+    t.integer  "user_id"
+    t.integer  "course_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "similarities", :force => true do |t|
+    t.integer  "source_code1_id"
+    t.integer  "source_code2_id"
+    t.float    "similarity"
+    t.float    "mar"
+    t.string   "used_algorithm"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "source_codes", :force => true do |t|
+    t.string   "student_id"
+    t.integer  "exercise_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email"

@@ -1,5 +1,11 @@
 Varch::Application.routes.draw do
   
+  resources :source_codes
+
+  resources :exercises
+
+  resources :courses
+
   get "logout" => "sessions#destroy", :as => "logout"
   get "login" => "sessions#new", :as => "login"
   get "sign_up" => "users#new", :as => "signup"
