@@ -1,13 +1,19 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <b>Name:</b>
+  <b>Clase:</b>
   <%= @course.name %>
 </p>
 
 <p>
-  <b>Courseid:</b>
+  <b>Curso:</b>
   <%= @course.courseid %>
+</p>
+
+<p>
+  <b>Ejercicios:</b><br />
+  <%= link_to 'Ejercicios', course_exercises_path(@course) %><br />
+  <%= link_to 'Nuevo Ejercicio', new_course_exercise_path(@course) %>
 </p>
 
 

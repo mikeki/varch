@@ -1,8 +1,14 @@
 class ExercisesController < ApplicationController
+  before_filter :find_course
+  
+  def find_course
+    @course = Course.find(params[:course_id])
+  end
+  
   # GET /exercises
   # GET /exercises.xml
   def index
-    @exercises = Exercise.all
+    @exercises = @course.exercises
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,7 +19,7 @@ class ExercisesController < ApplicationController
   # GET /exercises/1
   # GET /exercises/1.xml
   def show
-    @exercise = Exercise.find(params[:id])
+    @exercise = @course.exercises.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -34,17 +40,18 @@ class ExercisesController < ApplicationController
 
   # GET /exercises/1/edit
   def edit
-    @exercise = Exercise.find(params[:id])
+    @exercise = @course.exercises.find(params[:id])
   end
 
   # POST /exercises
   # POST /exercises.xml
   def create
-    @exercise = Exercise.new(params[:exercise])
+    @exercise = @course.exercises.build(params[:exercise])
+    current_user.exercises << @exercise
 
     respond_to do |format|
       if @exercise.save
-        format.html { redirect_to(@exercise, :notice => 'Exercise was successfully created.') }
+        format.html { redirect_to(course_exercise_path(@course, @exercise), :notice => 'Exercise was successfully created.') }
         format.xml  { render :xml => @exercise, :status => :created, :location => @exercise }
       else
         format.html { render :action => "new" }
@@ -56,11 +63,11 @@ class ExercisesController < ApplicationController
   # PUT /exercises/1
   # PUT /exercises/1.xml
   def update
-    @exercise = Exercise.find(params[:id])
+    @exercise = @course.exercises.find(params[:id])
 
     respond_to do |format|
       if @exercise.update_attributes(params[:exercise])
-        format.html { redirect_to(@exercise, :notice => 'Exercise was successfully updated.') }
+        format.html { redirect_to(course_exercise_path(@course, @exercise), :notice => 'Exercise was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -72,11 +79,11 @@ class ExercisesController < ApplicationController
   # DELETE /exercises/1
   # DELETE /exercises/1.xml
   def destroy
-    @exercise = Exercise.find(params[:id])
+    @exercise = @course.exercises.find(params[:id])
     @exercise.destroy
 
     respond_to do |format|
-      format.html { redirect_to(exercises_url) }
+      format.html { redirect_to(course_exercises_path(@course)) }
       format.xml  { head :ok }
     end
   end

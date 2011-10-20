@@ -17,14 +17,20 @@
 
 <p>
   <b>User:</b>
-  <%= @exercise.user_id %>
+  <%= @exercise.user.first_name %>
 </p>
 
 <p>
   <b>Course:</b>
-  <%= @exercise.course_id %>
+  <%= @exercise.course.name %>
+</p>
+
+<p>
+  <b>Source Codes:</b>
+  <%= link_to 'Source Codes', course_exercise_source_codes_path(@course, @exercise) %>
+  <%= link_to 'New Source Code', new_course_exercise_source_code_path(@course, @exercise) %>
 </p>
 
 
-<%= link_to 'Edit', edit_exercise_path(@exercise) %> |
-<%= link_to 'Back', exercises_path %>
+<%= link_to 'Edit', edit_course_exercise_path(@course, @exercise) %> |
+<%= link_to 'Back', course_exercises_path(@course) %>

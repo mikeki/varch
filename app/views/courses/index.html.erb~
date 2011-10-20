@@ -6,12 +6,14 @@
     <th>Courseid</th>
     <th></th>
     <th></th>
+    <th></th>
   </tr>
 
 <% @courses.each do |course| %>
   <tr>
-    <td><%= link_to course.name, course %></td>
+    <td><%= course.name %></td>
     <td><%= course.courseid %></td>
+    <td><%= link_to 'Show', course %></td>
     <td><%= link_to 'Edit', edit_course_path(course) %></td>
     <td><%= link_to 'Destroy', course, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>

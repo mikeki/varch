@@ -1,4 +1,4 @@
-<%= form_for(@exercise) do |f| %>
+<%= form_for([@course, @exercise]) do |f| %>
   <% if @exercise.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@exercise.errors.count, "error") %> prohibited this exercise from being saved:</h2>
@@ -22,14 +22,6 @@
   <div class="field">
     <%= f.label :similarity_avarage %><br />
     <%= f.text_field :similarity_avarage %>
-  </div>
-  <div class="field">
-    <%= f.label :user_id %><br />
-    <%= f.text_field :user_id %>
-  </div>
-  <div class="field">
-    <%= f.label :course_id %><br />
-    <%= f.text_field :course_id %>
   </div>
   <div class="actions">
     <%= f.submit %>

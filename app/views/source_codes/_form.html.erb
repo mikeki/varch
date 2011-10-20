@@ -1,4 +1,4 @@
-<%= form_for(@source_code) do |f| %>
+<%= form_for([@exercise.course, @exercise, @source_code]) do |f| %>
   <% if @source_code.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@source_code.errors.count, "error") %> prohibited this source_code from being saved:</h2>
@@ -16,8 +16,8 @@
     <%= f.text_field :student_id %>
   </div>
   <div class="field">
-    <%= f.label :exercise_id %><br />
-    <%= f.text_field :exercise_id %>
+    <%= f.label :code %><br />
+    <%= f.text_area :code %>
   </div>
   <div class="actions">
     <%= f.submit %>

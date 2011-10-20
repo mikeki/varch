@@ -17,15 +17,15 @@
     <td><%= exercise.name %></td>
     <td><%= exercise.description %></td>
     <td><%= exercise.similarity_avarage %></td>
-    <td><%= exercise.user_id %></td>
-    <td><%= exercise.course_id %></td>
-    <td><%= link_to 'Show', exercise %></td>
-    <td><%= link_to 'Edit', edit_exercise_path(exercise) %></td>
-    <td><%= link_to 'Destroy', exercise, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= exercise.user.first_name + " " + exercise.user.last_name %></td>
+    <td><%= exercise.course.name %></td>
+    <td><%= link_to 'Show', course_exercise_path(@course, exercise) %></td>
+    <td><%= link_to 'Edit', edit_course_exercise_path(@course, exercise) %></td>
+    <td><%= link_to 'Destroy', course_exercise_path(@course, exercise), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Exercise', new_exercise_path %>
+<%= link_to 'New Exercise', new_course_exercise_path(@course) %>
