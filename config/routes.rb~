@@ -1,8 +1,9 @@
 Varch::Application.routes.draw do
   resources :courses do
     resources :exercises do
-      resources :source_codes
-      post 'upload' => "source_codes#upload_file", :as => :upload_file
+      resources :source_codes do
+        post 'upload' => "source_codes#upload_file", :as => :upload_file
+      end
     end
   end
 

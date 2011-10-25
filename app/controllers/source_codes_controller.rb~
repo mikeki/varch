@@ -93,10 +93,11 @@ class SourceCodesController < ApplicationController
   
   def upload_file
     tmp = params[:zip_file][:file].tempfile
+    #file = "#{RAILS_ROOT}/public/zipfiles/#{params[:zip_file][:file].original_filename.tr(' ','-')}"
     file = "#{RAILS_ROOT}/public/zipfiles/#{params[:zip_file][:file].original_filename.tr(' ','-')}"
     #Dir.mkdir(File.dirname(file)) if !File.exists?(File.dirname(file))
-    FileUtils.cp(tmp.path, file)
-    unzip(file, "#{RAILS_ROOT}/public/zipfiles")
+    FileUtils.cp(tmp.path, "#{RAILS_ROOT}/public/zipfiles")
+    unzip(file, "#{RAILS_ROOT}/public/zipfiles/#{params[:zip_file][:file].original_filename.chomp('.zip')}")
     FileUtils.rm(file)
     redirect_to course_exercise_path(@exercise.course, @exercise)
   end

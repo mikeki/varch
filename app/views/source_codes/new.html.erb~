@@ -2,7 +2,7 @@
 
 <%= render 'form' %>
 
-<% form_for @zipfile, :html => {:multipart => true}, :url =>  course_exercise_upload_file_path(@exercise.course, @exercise) do |f| -%>
+<% form_for @zipfile, :html => {:multipart => true}, :url => course_exercise_source_code_upload_file_path(@exercise.course, @exercise) do |f| -%>
   <div>
     <%= f.label :file %><br />
     <%= f.file_field :file %>

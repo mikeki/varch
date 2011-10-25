@@ -1,0 +1,8 @@
+class ZipFileController < ApplicationController
+  def create
+    file = params[:zip_file][:file]
+    FileUtils.copy(file.local_path, "#{RAILS_ROOT}/public/zipfiles")
+    
+  end
+
+end
