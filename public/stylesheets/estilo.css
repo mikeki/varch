@@ -30,7 +30,13 @@ div.inset { text-shadow:#fff 0px 1px 0, #000 0 -1px 0;}
 
 div#tituloHeader { line-height:1.5em; font-size:4em; font-weight:bold; color:#0D3B7C;}
 
-div#subtituloHeader { line-height:1em; font-size:1em; font-weight:bold; color:#0D3B7C; margin:-10px 0px 0px 33px;}
+div#subtituloHeader { 
+	line-height:1em; 
+	font-size:1em; 
+	font-weight:bold; 
+	color:#0D3B7C; 
+	margin:-10px 0px 0px 33px;
+}
 
 div#header{
   height:100px;
@@ -359,4 +365,19 @@ input[type=submit], input[type=button] {
 	background-image: none;
 	color:#FFFFFF;
 	font-weight: bold;
+}
+
+
+
+/*Tables*/
+table
+{
+	border-collapse:collapse;
+}
+
+table, td, th
+{
+	border:none;
+	text-align:left;
+	padding-right:15px;
 }

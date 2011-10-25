@@ -7,7 +7,7 @@
 <% if current_user %>
   <li><%=link_to "Lista de Cursos", courses_path, :class=>"botones "+(current_page?(courses_path)? "botonon" : "botonoff")%></li>
   <li><%=link_to "Lista de Maestros", users_path, :class=>"botones "+(current_page?(users_path) ? "botonon" : "botonoff")%></li>
-  <li><%=link_to "Editar Perfil", edit_user_path(current_user), :class=>"botones "+(@tab=="editU"? "botonon" : "botonoff")%></li>
+  <li><%=link_to "Editar Perfil", edit_user_path(current_user), :class=>"botones "+(current_page?(edit_user_path(current_user))? "botonon" : "botonoff")%></li>
   <li><%=link_to "Salir", logout_path, :class=>"botones botonoff"%></li>
 <%else%>
   <li><%=link_to "Entrar", login_path, :class=>"botones botonoff"%></li>

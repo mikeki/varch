@@ -2,6 +2,7 @@
 
 <table>
   <tr>
+	<!--checkbox (select all)--><th><input name="" type="checkbox" /></th>
     <th>Student</th>
     <th>Exercise</th>
     <th></th>
@@ -11,6 +12,7 @@
 
 <% @source_codes.each do |source_code| %>
   <tr>
+	<!--checkbox--><td><input name="<%= source_code.student_id %>" type="checkbox" /></td>
     <td><%= source_code.student_id %></td>
     <td><%= source_code.exercise.name %></td>
     <td><%= link_to 'Show', course_exercise_source_code_path(@exercise.course, @exercise, source_code) %></td>
