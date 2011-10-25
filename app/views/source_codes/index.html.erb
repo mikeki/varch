@@ -22,4 +22,4 @@
 
 <br />
 
-<%= link_to 'New Source code', new_course_exercise_source_code_path(@exercise.course, @exercise) %>
+<%= button_to('New Source code', new_course_exercise_source_code_path(@exercise.course, @exercise), :method => :get) %>
