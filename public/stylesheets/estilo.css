@@ -367,8 +367,6 @@ input[type=submit], input[type=button] {
 	font-weight: bold;
 }
 
-
-
 /*Tables*/
 table
 {
@@ -382,6 +380,27 @@ table, td, th
 	padding-right:15px;
 }
 
+/*Parragraphs*/
+p
+{
+	/*font-family: "Helvetica Neue", "Lucida Grande", Helvetica, Arial, Verdana, sans-serif;
+        font-size: 14px;
+        margin-top: .5em; color: #666;*/
+/*font-family:  'Hoefler Text', Georgia, 'Times New Roman', serif;
+	font-weight: normal;
+        font-size: 1.75em;
+	letter-spacing: .2em;
+	line-height: 1.1em;
+	margin:0px;
+	text-align: center;
+	text-transform: uppercase;*/
+display: block;
+	color: #0D3B7C;
+	font-size: 9px;
+	padding-top: 5px;
+
+	
+}
 
 
 
