@@ -141,8 +141,14 @@ class SourceCodesController < ApplicationController
   end
    
   def compare
-    parametros = {:algorithms => params[:algorithms], :files=>params[:files]}
-    #debugger
+    parametros = {}
+    parametros[:algorithms] = params[:algorithms]
+    parametros[:files] = []
+    params[:files].each do |index|
+      source_code = SourceCode.find(index)
+      parametros[:files] << {:id => index, :code => source_code.code}
+    end
+    debugger
     request = Net::HTTP.post_form(URI.parse('http://localhost:3001/compare'), parametros)
   end
    

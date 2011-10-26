@@ -22,7 +22,7 @@
   <% @source_codes.each do |source_code| %>
     <tr>
 	  <!--checkbox-->
-	    <td><%= check_box_tag "files[]", {"id"=>source_code.id, "code"=>source_code.code}%></td>
+	    <td><%= check_box_tag "files[]", source_code.id%></td>
       <td><%= source_code.student_id %></td>
       <td><%= source_code.exercise.name %></td>
       <td><%= link_to 'Show', course_exercise_source_code_path(@exercise.course, @exercise, source_code) %></td>
