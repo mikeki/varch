@@ -151,6 +151,7 @@ class SourceCodesController < ApplicationController
       source_code = SourceCode.find(index)
       files << {:id => index, :code => source_code.code}
     end
+    parametros = {}
     parametros[:params] = json.encode({:algorithms => algorithms, :files => files})
     #debugger
     request = Net::HTTP.post_form(URI.parse('http://localhost:3001/compare'), parametros)
