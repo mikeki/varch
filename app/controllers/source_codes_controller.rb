@@ -148,7 +148,7 @@ class SourceCodesController < ApplicationController
     files = []
     params[:files].each do |index|
       source_code = SourceCode.find(index)
-      files << {:id => index, :code => source_code.code}
+      files << {'id' => index, 'code' => source_code.code}
     end
     parametros = {:algorithms => algorithms, :files => files}
     #debugger
