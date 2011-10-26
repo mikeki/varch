@@ -144,15 +144,16 @@ class SourceCodesController < ApplicationController
   end
    
   def compare
+    json = ActiveSupport::JSON
     algorithms = params[:algorithms]
     files = []
     params[:files].each do |index|
       source_code = SourceCode.find(index)
-      files << {'id' => index, 'code' => source_code.code}
+      files << {:id => index, :code => source_code.code}
     end
     parametros = {:algorithms => algorithms, :files => files}
     #debugger
-    request = Net::HTTP.post_form(URI.parse('http://localhost:3001/compare'), parametros)
+    request = Net::HTTP.post_form(URI.parse('http://localhost:3001/compare'), json.encode(parametros))
   end
    
 end
