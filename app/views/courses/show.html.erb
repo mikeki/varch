@@ -3,9 +3,11 @@
 <h1><%= @course.courseid %> - <%= @course.name %></h1>
 <br />
 <h2>Ejercicios</h2>
-  <ul>
-	<% @course.exercises.order(:user_id).each do |exercise| %>
-      <li><%= link_to exercise.name, course_exercise_path(@course, exercise)%> -   <i><%= "#{exercise.user.first_name} #{exercise.user.last_name}:"%></i></li>
+	<ul>
+		<% @course.exercises.order(:user_id).each do |exercise| %>
+	 	<li>
+			<%= link_to exercise.name, course_exercise_path(@course, exercise)%> - 
+			<i><%= "#{exercise.user.first_name} #{exercise.user.last_name}"%></i></li>
     <%end%>
   </ul>
 
