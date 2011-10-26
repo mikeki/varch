@@ -1,20 +1,28 @@
 <h1>Listing source_codes</h1>
 
+<% form_tag course_exercise_compare_path(@exercise.course, @exercise) do |f| -%>
+  <div>
+    Algoritmos:<br />
+    <%= check_box_tag "algorithms[]", "1"%>
+    <%= label_tag :algorithms_1, 'Algoritmo 1'%>
+    <%= check_box_tag "algorithms[]", "2"%><%= label_tag :algorithms_2, 'Algoritmo 2'%>
+    <%= check_box_tag "algorithms[]", "3"%><%= label_tag :algorithms_3, 'Algoritmo 3'%>
+  </div>
+  <br />
 <table>
   <tr>
 	<!--checkbox (select all)-->
-	<th><%= check_box_tag :select_all%></th>
+	  <th><%= check_box_tag :select_all%></th>
     <th>Alumno</th>
     <th>Ejercicio</th>
     <th></th>
     <th></th>
     <th></th>
   </tr>
-<% form_for @input, :url=>"http://localhost:3001/compare" do |f| -%>
   <% @source_codes.each do |source_code| %>
     <tr>
 	  <!--checkbox-->
-	    <td><%= f.check_box :files, :value=>{:id=>source_code.id, :code => source_code.code}%></td>
+	    <td><%= check_box_tag "files[]", {"id"=>source_code.id, "code"=>source_code.code}%></td>
       <td><%= source_code.student_id %></td>
       <td><%= source_code.exercise.name %></td>
       <td><%= link_to 'Show', course_exercise_source_code_path(@exercise.course, @exercise, source_code) %></td>
@@ -22,9 +30,16 @@
       <td><%= link_to 'Destroy', course_exercise_source_code_path(@exercise.course, @exercise, source_code), :confirm => 'Are you sure?', :method => :delete %></td>
     </tr>
   <% end %>
+    <tr>
+      <td>
+      </td>
+      <td>
+        <%= submit_tag 'Comparar'%>
+      </td>
+    </tr>
   </table>
 
 <% end -%>
 <br />
 
-<%= button_to('Nuevo código fuente', new_course_exercise_source_code_path(@exercise.course, @exercise), :method => :get) %>
+<%= link_to('Nuevo código fuente', new_course_exercise_source_code_path(@exercise.course, @exercise)) %>

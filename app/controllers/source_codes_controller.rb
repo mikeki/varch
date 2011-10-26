@@ -1,5 +1,7 @@
 require 'zip'
 require 'find'
+require 'uri'
+require 'net/http'
 
 class SourceCodesController < ApplicationController
   before_filter :find_exercise
@@ -136,6 +138,12 @@ class SourceCodesController < ApplicationController
       end
     end
     FileUtils.rm_rf(file_path)
+  end
+   
+  def compare
+    parametros = {:algorithms => params[:algorithms], :files=>params[:files]}
+    #debugger
+    request = Net::HTTP.post_form(URI.parse('http://localhost:3001/compare'), parametros)
   end
    
 end

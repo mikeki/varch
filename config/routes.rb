@@ -3,6 +3,7 @@ Varch::Application.routes.draw do
     resources :exercises do
       resources :source_codes
       post 'upload' => "source_codes#upload_file", :as => :upload_file
+      post 'compare' => "source_codes#compare", :as => :compare
     end
   end
 
