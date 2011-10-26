@@ -4,8 +4,8 @@
   <tr>
 	<!--checkbox (select all)-->
 	<th><%= check_box_tag :select_all%></th>
-    <th>Student</th>
-    <th>Exercise</th>
+    <th>Alumno</th>
+    <th>Ejercicio</th>
     <th></th>
     <th></th>
     <th></th>
@@ -27,4 +27,4 @@
 <% end -%>
 <br />
 
-<%= button_to('New Source code', new_course_exercise_source_code_path(@exercise.course, @exercise), :method => :get) %>
+<%= button_to('Nuevo código fuente', new_course_exercise_source_code_path(@exercise.course, @exercise), :method => :get) %>

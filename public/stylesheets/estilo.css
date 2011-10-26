@@ -136,7 +136,7 @@ a.botonoff{
 }
 
 a.botonaz{
-  display: inline-block;
+  display: inline;
   padding: 10px 10px 10px;
   color: #0D3B7C;
   margin:0px 0px 10px 0px;
@@ -184,7 +184,7 @@ div.usuario{
 }
 
 h1{
-
+	color: #0D3B7C;
 }
 
 #loading{
@@ -371,6 +371,7 @@ input[type=submit], input[type=button] {
 table
 {
 	border-collapse:collapse;
+	color: #0D3B7C;
 }
 
 table, td, th
@@ -378,6 +379,7 @@ table, td, th
 	border:none;
 	text-align:left;
 	padding-right:15px;
+	color: #0D3B7C;
 }
 
 /*Parragraphs*/
@@ -394,13 +396,21 @@ p
 	margin:0px;
 	text-align: center;
 	text-transform: uppercase;*/
-display: block;
+	display: block;
 	color: #0D3B7C;
 	font-size: 9px;
 	padding-top: 5px;
-
 	
 }
 
+#name_show_exercise
+{
+	font-size: 25px;
+	text-indent: 10px;
+}
 
-
+#else_show_exercise
+{
+	font-size: 17px;
+	text-indent: 25px;
+}

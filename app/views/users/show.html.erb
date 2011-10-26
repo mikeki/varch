@@ -7,6 +7,7 @@
 </p>
 
 <p>
+
 <b>Ejercicios del profesor</b>
 <ul>
   <% @user.exercises.each do |exercise|%>
@@ -15,5 +16,5 @@
 </ul>
 </p>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<%= link_to 'Editar', edit_user_path(@user) %> |
+<%= link_to 'Atrás', users_path %>
