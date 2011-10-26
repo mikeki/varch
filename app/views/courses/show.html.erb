@@ -11,6 +11,14 @@
     <%end%>
   </ul>
 <% end %>
-<%= link_to 'Nuevo Ejercicio', new_course_exercise_path(@course) %> |
-<%= link_to 'Editar Curso', edit_course_path(@course) %>
 
+<table>
+<tr><th></th></tr>
+<tr>
+<td>
+<%= button_to 'Editar Curso', edit_course_path(@course), :method=>:get %>
+</td>
+<td>
+<%= button_to 'Nuevo Ejercicio', new_course_exercise_path(@course), :method=>:get %></td>
+</tr>
+</table>

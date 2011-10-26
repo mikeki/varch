@@ -1,7 +1,7 @@
 <%= form_for([@course, @exercise]) do |f| %>
   <% if @exercise.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@exercise.errors.count, "error") %> prohibited this exercise from being saved:</h2>
+      <h2><%= pluralize(@exercise.errors.count, "error") %> prohibido salvar cambios a este ejercicio:</h2>
 
       <ul>
       <% @exercise.errors.full_messages.each do |msg| %>
