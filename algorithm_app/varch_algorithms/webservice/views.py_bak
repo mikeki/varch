@@ -1,0 +1,45 @@
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+import ctypes
+try: import simplejson as json
+except ImportError: import json
+
+#TODO cambiarlo de lugar... por mientras esta mas comodo ahi :P
+algorithms = ctypes.cdll.LoadLibrary("/home/mamsaac/Desktop/libalgorithms.so")
+algorithms.ld_many.args = [ctypes.c_char_p, ctypes.POINTER(ctypes.c_char_p), ctypes.POINTER(ctypes.c_int), ctypes.c_int]
+algorithms.
+
+@csrf_exempt
+def compare(request):
+    result = []
+    if 'files' not in request.POST or 'algorithms' not in request.POST:
+		return HttpResponse(json.dumps({'error' : 'Wrong data: ' + str(request.POST)}))
+    files = request.POST['files']
+    for f in files:
+		f['code'] = ' '.join(f['code'].split())
+    #n corridas, cada corrida tomamos el dato a mandar y creamos un arreglo sin el
+    if len(files) < 2: 
+		return HttpResponse(json.dumps({'error' : 'Just one file: ' + str(request.POST)}))
+	
+    for i in range(len(files)):
+        curr_file = files[i]
+        to_compare = filter(lambda x: x['id'] != curr_file['id'], files)
+        if 'code' not in curr_file:
+			return HttpResponse(json.dumps({'error' : 'Wrong data: ' + str(request.POST)}))
+        param1 = curr_file['code']
+        param2 = map(lambda x: x['code'], to_compare)
+        p2len = len(param2)
+        ld_real_param1 = ctypes.c_char_p(param1)
+        ld_real_param2 = (ctypes.c_char_p * p2len)()
+        for i in range(p2len):
+            ld_real_param2[i] = ctypes.c_char_p(param2[i])
+
+        ld_real_param3 = (ctypes.c_float * p2len)()
+        ld_real_param4 = ctypes.c_int(p2len)
+        if '1' in request.POST['algorithms']:
+            algorithms.ld_many(ld_real_param1, ld_real_param2, ld_real_param3, ld_real_param4)
+        sims = map(lambda x : {'id' : to_compare[x]['id'], 'similarity' : {'1' : ld_real_param3[x]}})
+        
+        result.append({'id' : curr_file['id'], 'similarities' : sims})
+        
+    return HttpResponse(json.dumps(result))
