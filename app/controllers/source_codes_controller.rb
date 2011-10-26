@@ -151,7 +151,7 @@ class SourceCodesController < ApplicationController
       source_code = SourceCode.find(index)
       parametros[:files] << {:id => index, :code => source_code.code}
     end
-    debugger
+    #debugger
     request = Net::HTTP.post_form(URI.parse('http://localhost:3001/compare'), parametros)
   end
    
