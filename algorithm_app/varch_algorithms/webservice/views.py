@@ -12,7 +12,6 @@ algorithms.sherlock_compare.args = [ctypes.c_char_p, ctypes.c_char_p]
 @csrf_exempt
 def compare(request):
     req = json.loads(request.POST['params'])
-    print "HOLA"
     result = []
     if 'files' not in req or 'algorithms' not in req:
         return HttpResponse(json.dumps({'error' : 'Wrong data: ' + str(req)}))
@@ -31,6 +30,7 @@ def compare(request):
         to_compare = filter(lambda x: x['id'] != curr_file['id'], files)
         if 'code' not in curr_file:
             return HttpResponse(json.dumps({'error' : 'Wrong data: ' + str(req)}))
+# So far so good. Returned data should have the following format:
 #    [ 
 #        { 'id' : id,
 #          'similarities' : [
@@ -44,13 +44,9 @@ def compare(request):
             print 'entro'
             curr_similarity = {'id' : tc['id'], 'similarity' : {}}
             if '1' in req['algorithms']:
-                print 'aja'
                 curr_similarity['similarity']['1'] = algorithms.ld_compare(curr_file['code'], tc['code'])
-                print 'eje'
             if '2' in req['algorithms']:
-                print 'ojo'
                 curr_similarity['similarity']['2'] = algorithms.sherlock_compare(curr_file['code'], tc['code'])
-                print 'uju'
             similarities.append(curr_similarity)
         result.append({'id' : curr_file['id'], 'similarities' : similarities})
     print json.dumps(result)

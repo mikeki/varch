@@ -66,15 +66,20 @@ int	compare(Sig *, Sig *);
    the 'ignore' or 'punct' characters is found.
    Uses memory allocation to avoid buffer overflow problems.
 */
-
+int s_size = 0, curr_pos = 0;
 int sherlock_compare(char *s, char *n)
 {
 	Sig *a, *b;
 	
 	init_token_array();
-	
-	a = signature(s);
-	b = signature(n);
+    
+	s_size = strlen(s);
+	curr_pos = 0;
+    a = signature(s);
+    
+    s_size = strlen(n);
+	curr_pos = 0;
+    b = signature(n);
 	return compare(a, b);
 }
 
@@ -107,8 +112,9 @@ char * read_word(char *f, int *length, char *ignore, char *punct)
 
 	/* read characters into the buffer, resizing it if necessary */
 	
-	while ((ch = *(f++)) != '\0') {
+	while (s_size > curr_pos && (ch = *(f++)) != '\0') {
 		is_ignore = (strchr(ignore, ch) != NULL);
+        curr_pos++;
 		if (pos == 0) {
 			if (is_ignore)
 				/* ignorable char found at start, skip it */
