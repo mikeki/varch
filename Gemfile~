@@ -10,7 +10,6 @@ gem 'mysql2', '< 0.3'
 gem "bcrypt-ruby", :require => "bcrypt"
 gem 'railroady'
 gem 'rubyzip2'
-gem 'json'
 #gem 'fastercsv'
 #gem 'ruby-debug19', :require => 'ruby-debug'
 

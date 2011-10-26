@@ -48,4 +48,4 @@ def compare(request):
             similarities.append(curr_similarity)
         result.append({'id' : curr_file['id'], 'similarities' : similarities})
     print json.dumps(result)
-    return HttpResponse(json.dumps(result))
+    return HttpResponse(json.dumps(result), mimetype='application/javascript')
