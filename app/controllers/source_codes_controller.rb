@@ -13,6 +13,7 @@ class SourceCodesController < ApplicationController
   # GET /source_codes.xml
   def index
     @source_codes = @exercise.source_codes
+    @input = SimilarityInput.new
 
     respond_to do |format|
       format.html # index.html.erb
