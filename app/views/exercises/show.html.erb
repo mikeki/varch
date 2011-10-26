@@ -1,36 +1,36 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <b id="show_exercise">Name:</b>
+<p id="name_show_exercise">
+  <b>Name:</b>
   <%= @exercise.name %>
 </p>
 
-<p>
+<p id="else_show_exercise">
   <b>Description:</b>
   <%= @exercise.description %>
 </p>
 
-<p>
+<p id="else_show_exercise">
   <b>Similarity avarage:</b>
   <%= @exercise.similarity_avarage %>
 </p>
 
-<p>
+<p id="else_show_exercise">
   <b>User:</b>
   <%= @exercise.user.first_name %>
 </p>
 
-<p>
+<p id="else_show_exercise">
   <b>Course:</b>
   <%= @exercise.course.name %>
 </p>
 
-<p>
+<p id="else_show_exercise">
   <b>Source Codes:</b>
-  <%= link_to 'View', course_exercise_source_codes_path(@course, @exercise) %>
+  <%= link_to 'View', course_exercise_source_codes_path(@course, @exercise) %>  
   <%= link_to 'New', new_course_exercise_source_code_path(@course, @exercise) %>
+
 </p>
 
+<%= button_to 'Edit', edit_course_exercise_path(@course, @exercise), :method=>:get %> <%= button_to 'Back', course_exercises_path(@course), :method=>:get %>
 
-<%= link_to 'Edit', edit_course_exercise_path(@course, @exercise) %> | 
-<%= link_to 'Back', course_exercises_path(@course) %>

@@ -136,7 +136,7 @@ a.botonoff{
 }
 
 a.botonaz{
-  display: inline-block;
+  display: inline;
   padding: 10px 10px 10px;
   color: #0D3B7C;
   margin:0px 0px 10px 0px;
@@ -394,17 +394,20 @@ p
 	margin:0px;
 	text-align: center;
 	text-transform: uppercase;*/
-display: block;
+	display: block;
 	color: #0D3B7C;
 	font-size: 9px;
 	padding-top: 5px;
-
 	
 }
 
+#name_show_exercise
+{
+	font-size: 25px;
+}
 
-
-
-
-
-
+#else_show_exercise
+{
+	font-size: 17px;
+	text-indent: 15px;
+}
