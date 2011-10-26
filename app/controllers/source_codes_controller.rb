@@ -2,7 +2,6 @@ require 'zip'
 require 'find'
 require 'uri'
 require 'net/http'
-require 'json'
 
 class SourceCodesController < ApplicationController
   before_filter :find_exercise
@@ -169,7 +168,7 @@ class SourceCodesController < ApplicationController
     @similarities = []
     case response
       when Net::HTTPSuccess, Net::HTTPRedirection
-        JSON.parse(response.body).each do |data_hash|
+        json.decode(response.body).each do |data_hash|
           similarity1_id = data_hash["id"]
           data_hash["similarities"].each do |compared|
             similarity2_id = compared["id"]
