@@ -98,7 +98,6 @@ class SourceCodesController < ApplicationController
   def upload_file
     tmp = params[:zip_file][:file].tempfile
     file = "#{RAILS_ROOT}/public/zipfiles/#{params[:zip_file][:file].original_filename.tr(' ','-')}"
-    #Dir.mkdir(File.dirname(file)) if !File.exists?(File.dirname(file))
     FileUtils.cp(tmp.path, file)
     unzip(file, "#{RAILS_ROOT}/public/zipfiles")
     FileUtils.rm(file)
@@ -120,6 +119,10 @@ class SourceCodesController < ApplicationController
       end
       zip_file.extract( entry, file_path )
     end
+    copy_to_database(file)
+  end
+  
+  def copy_to_database(file)
     file_path = file.chomp(".zip")
     Find.find(file_path) do |subfile|
       if subfile != file_path
