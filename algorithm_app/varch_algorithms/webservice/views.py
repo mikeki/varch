@@ -28,7 +28,8 @@ def compare(request):
     files = req['files']
     for f in files:
         #get rid off spaces and make it a c-valid parameter
-        f['code'] = ctypes.c_char_p('lala')
+        f['code'] = ctypes.c_char_p(f['code']) 
+    
         
     #n corridas, cada corrida tomamos el dato a mandar y creamos un arreglo sin el
     if len(files) < 2: 
@@ -42,8 +43,10 @@ def compare(request):
         for tc in to_compare:
             curr_similarity = {'id' : tc['id'], 'similarity' : {}}
             if '1' in req['algorithms']:
+                print curr_file['code'], tc['code'], algorithms.ld_compare(curr_file['code'], tc['code'])
                 curr_similarity['similarity']['1'] = algorithms.ld_compare(curr_file['code'], tc['code'])
             if '2' in req['algorithms']:
+                print curr_file['code'], tc['code'], algorithms.sherlock_compare(curr_file['code'], tc['code'])
                 curr_similarity['similarity']['2'] = algorithms.sherlock_compare(curr_file['code'], tc['code'])
             similarities.append(curr_similarity)
         result.append({'id' : curr_file['id'], 'similarities' : similarities})

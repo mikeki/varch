@@ -309,7 +309,7 @@ int ld_compare(char *s, char *t)
 {
 	int mini, size1 = strlen(s), size2 = strlen(t);
 	float res;
-	mini = min(size1, size2);
+	mini = max(size1, size2);
 	res = 1 - (
 			((float)levenshtein_distance(s, t, size1, size2))
 			/ (float) mini);
