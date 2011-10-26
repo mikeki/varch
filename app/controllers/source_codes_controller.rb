@@ -144,6 +144,8 @@ class SourceCodesController < ApplicationController
   end
    
   def compare
+    # Prepare variables for the HASH
+    #
     json = ActiveSupport::JSON
     algorithms = params[:algorithms]
     files = []
@@ -151,10 +153,39 @@ class SourceCodesController < ApplicationController
       source_code = SourceCode.find(index)
       files << {:id => index, :code => source_code.code}
     end
+    
+    # Create parameters HASH
+    #
     parametros = {}
     parametros[:params] = json.encode({:algorithms => algorithms, :files => files})
-    #debugger
-    request = Net::HTTP.post_form(URI.parse('http://localhost:3001/compare'), parametros)
+    
+    # Sends HTTP post to python webservice that runds the algorithms
+    #
+    response = Net::HTTP.post_form(URI.parse('http://localhost:3001/compare'), parametros)
+    
+    # Process the response and saves the similarities on database
+    #
+    @similarities = []
+    case response
+      when Net::HTTPSuccess, Net::HTTPRedirection
+        json.decode(response.body).each do |data_hash|
+          similarity1_id = data_hash[:id]
+          data_hash[:similarities].each do |compared|
+            similarity2_id = compared[:id]
+            compared[:similarity].each do |key, percentage|
+              similarity = Similarity.new
+              similarity.source_code1_id = similarity1_id
+              similarity.source_code2_id = similarity2_id
+              similarity.used_algorithm = key
+              similarity.similarity = percentage
+              similarity.save
+              @similarities << similarity
+            end
+          end
+        end
+      else
+        response.error!
+    end
   end
    
 end
