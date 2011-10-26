@@ -1,23 +1,16 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <b>Clase:</b>
-  <%= @course.name %>
-</p>
-
-<p>
-  <b>Curso:</b>
-  <%= @course.courseid %>
-</p>
-
-<p>
-  <b>Ejercicios:</b><br />
-  <%= link_to 'Ejercicios', course_exercises_path(@course) %><br />
-  <%= link_to 'Nuevo Ejercicio', new_course_exercise_path(@course) %>
-</p>
-
-
-<%= link_to 'Editar', edit_course_path(@course) %> |
-<%= link_to 'Atrás', courses_path %>
-
+<h1><%= @course.courseid %> - <%= @course.name %></h1>
+<br />
+<h2>Ejercicios por profesor</h2>
+<% @users.each do |user| %>
+  <h3><%= "#{user.first_name} #{user.last_name}:"%></h3>
+  <ul>
+    <% user.exercises.each do |exercise|%>
+      <li><%= link_to exercise.name, course_exercise_path(@course, exercise)%></li>
+    <%end%>
+  </ul>
+<% end %>
+<%= link_to 'Nuevo Ejercicio', new_course_exercise_path(@course) %> |
+<%= link_to 'Editar Curso', edit_course_path(@course) %>
 

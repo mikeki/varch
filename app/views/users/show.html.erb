@@ -1,4 +1,5 @@
 <p id="notice"><%= notice %></p>
+<h1><%= "#{@user.first_name} #{@user.last_name}" %></h1>
 
 <p>
   <b>Email:</b>
@@ -6,15 +7,14 @@
 </p>
 
 <p>
-  <b>Nombre:</b>
-  <%= @user.first_name %>
-</p>
 
-<p>
-  <b>Apellido:</b>
-  <%= @user.last_name %>
+<b>Ejercicios del profesor</b>
+<ul>
+  <% @user.exercises.each do |exercise|%>
+    <li><%= link_to exercise.name, course_exercise_path(exercise.course, exercise)%></li>
+  <%end%>
+</ul>
 </p>
-
 
 <%= link_to 'Editar', edit_user_path(@user) %> |
 <%= link_to 'Atrás', users_path %>

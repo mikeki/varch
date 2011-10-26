@@ -2,26 +2,29 @@
 
 <table>
   <tr>
-	<!--checkbox (select all)--><th><input name="" type="checkbox" /></th>
+	<!--checkbox (select all)-->
+	<th><%= check_box_tag :select_all%></th>
     <th>Alumno</th>
     <th>Ejercicio</th>
     <th></th>
     <th></th>
     <th></th>
   </tr>
+<% form_for @input, :url=>"http://localhost:3001/compare" do |f| -%>
+  <% @source_codes.each do |source_code| %>
+    <tr>
+	  <!--checkbox-->
+	    <td><%= f.check_box :files, :value=>{:id=>source_code.id, :code => source_code.code}%></td>
+      <td><%= source_code.student_id %></td>
+      <td><%= source_code.exercise.name %></td>
+      <td><%= link_to 'Show', course_exercise_source_code_path(@exercise.course, @exercise, source_code) %></td>
+      <td><%= link_to 'Edit', edit_course_exercise_source_code_path(@exercise.course, @exercise, source_code) %></td>
+      <td><%= link_to 'Destroy', course_exercise_source_code_path(@exercise.course, @exercise, source_code), :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+  </table>
 
-<% @source_codes.each do |source_code| %>
-  <tr>
-	<!--checkbox--><td><input name="<%= source_code.student_id %>" type="checkbox" /></td>
-    <td><%= source_code.student_id %></td>
-    <td><%= source_code.exercise.name %></td>
-    <td><%= link_to 'Mostrar', course_exercise_source_code_path(@exercise.course, @exercise, source_code) %></td>
-    <td><%= link_to 'Editar', edit_course_exercise_source_code_path(@exercise.course, @exercise, source_code) %></td>
-    <td><%= link_to 'Eliminar', course_exercise_source_code_path(@exercise.course, @exercise, source_code), :confirm => 'Estás seguro?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
-
+<% end -%>
 <br />
 
 <%= button_to('Nuevo código fuente', new_course_exercise_source_code_path(@exercise.course, @exercise), :method => :get) %>
