@@ -1,8 +1,8 @@
-<h1>New source_code</h1>
+<h1>Nuevo código fuente</h1>
 
 <%= render 'form' %>
 
-<% form_for @zipfile, :html => {:multipart => true}, :url => course_exercise_source_code_upload_file_path(@exercise.course, @exercise) do |f| -%>
+<% form_for @zipfile, :html => {:multipart => true}, :url =>  course_exercise_upload_file_path(@exercise.course, @exercise) do |f| -%>
   <div>
     <%= f.label :file %><br />
     <%= f.file_field :file %>
@@ -12,4 +12,4 @@
   </div>
 <% end -%>
 
-<%= link_to 'Back', course_exercise_source_codes_path(@exercise.course, @exercise) %>
+<%= link_to 'Atrás', course_exercise_source_codes_path(@exercise.course, @exercise) %>

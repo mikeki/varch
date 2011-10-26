@@ -2,11 +2,11 @@
 
 <table>
   <tr>
-    <th>Name</th>
-    <th>Description</th>
-    <th>Similarity avarage</th>
-    <th>User</th>
-    <th>Course</th>
+    <th>Nombre</th>
+    <th>Descripcion</th>
+    <th>Promedio de similitud</th>
+    <th>Usuario</th>
+    <th>Cursos</th>
     <th></th>
     <th></th>
     <th></th>
@@ -19,13 +19,13 @@
     <td><%= exercise.similarity_avarage %></td>
     <td><%= exercise.user.first_name + " " + exercise.user.last_name %></td>
     <td><%= exercise.course.name %></td>
-    <td><%= link_to 'Show', course_exercise_path(@course, exercise) %></td>
-    <td><%= link_to 'Edit', edit_course_exercise_path(@course, exercise) %></td>
-    <td><%= link_to 'Destroy', course_exercise_path(@course, exercise), :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Mostrar', course_exercise_path(@course, exercise) %></td>
+    <td><%= link_to 'Editar', edit_course_exercise_path(@course, exercise) %></td>
+    <td><%= link_to 'Eliminar', course_exercise_path(@course, exercise), :confirm => 'Estás seguro?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
-<br />
+<br />	
 
-<%= button_to('New Exercise', new_course_exercise_path(@course), :method => :get) %>
+<%= button_to('Nuevo Ejercicio', new_course_exercise_path(@course), :method => :get) %>

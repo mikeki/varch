@@ -1,36 +1,44 @@
 <p id="notice"><%= notice %></p>
 
 <p id="name_show_exercise">
-  <b>Name:</b>
-  <%= @exercise.name %>
+	<b>Nombre:</b>
+	<%= @exercise.name %>
 </p>
 
 <p id="else_show_exercise">
-  <b>Description:</b>
+  <b>Descripción:</b>
   <%= @exercise.description %>
 </p>
 
 <p id="else_show_exercise">
-  <b>Similarity avarage:</b>
+  <b>Promedio de similitud:</b>
   <%= @exercise.similarity_avarage %>
 </p>
 
 <p id="else_show_exercise">
-  <b>User:</b>
+  <b>Usuario:</b>
   <%= @exercise.user.first_name %>
 </p>
 
 <p id="else_show_exercise">
-  <b>Course:</b>
+  <b>Curso:</b>
   <%= @exercise.course.name %>
 </p>
 
 <p id="else_show_exercise">
-  <b>Source Codes:</b>
-  <%= link_to 'View', course_exercise_source_codes_path(@course, @exercise) %>  
-  <%= link_to 'New', new_course_exercise_source_code_path(@course, @exercise) %>
+  <b>Codigo fuente:</b>
+  <%= link_to 'Mostrar', course_exercise_source_codes_path(@course, @exercise) %>  
+  <%= link_to 'Nuevo', new_course_exercise_source_code_path(@course, @exercise) %>
 
-</p>
-
-<%= button_to 'Edit', edit_course_exercise_path(@course, @exercise), :method=>:get %> <%= button_to 'Back', course_exercises_path(@course), :method=>:get %>
+</p>	
+<table>
+<tr>
+<td>
+<%= button_to 'Editar', edit_course_exercise_path(@course, @exercise), :method=>:get %>
+</td>
+<td>
+<%= button_to 'Atrás', course_exercises_path(@course), :method=>:get %>
+</td>
+</tr>
+</table>
 

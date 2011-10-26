@@ -3,8 +3,8 @@
 <table>
   <tr>
 	<!--checkbox (select all)--><th><input name="" type="checkbox" /></th>
-    <th>Student</th>
-    <th>Exercise</th>
+    <th>Alumno</th>
+    <th>Ejercicio</th>
     <th></th>
     <th></th>
     <th></th>
@@ -15,13 +15,13 @@
 	<!--checkbox--><td><input name="<%= source_code.student_id %>" type="checkbox" /></td>
     <td><%= source_code.student_id %></td>
     <td><%= source_code.exercise.name %></td>
-    <td><%= link_to 'Show', course_exercise_source_code_path(@exercise.course, @exercise, source_code) %></td>
-    <td><%= link_to 'Edit', edit_course_exercise_source_code_path(@exercise.course, @exercise, source_code) %></td>
-    <td><%= link_to 'Destroy', course_exercise_source_code_path(@exercise.course, @exercise, source_code), :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Mostrar', course_exercise_source_code_path(@exercise.course, @exercise, source_code) %></td>
+    <td><%= link_to 'Editar', edit_course_exercise_source_code_path(@exercise.course, @exercise, source_code) %></td>
+    <td><%= link_to 'Eliminar', course_exercise_source_code_path(@exercise.course, @exercise, source_code), :confirm => 'Estás seguro?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= button_to('New Source code', new_course_exercise_source_code_path(@exercise.course, @exercise), :method => :get) %>
+<%= button_to('Nuevo código fuente', new_course_exercise_source_code_path(@exercise.course, @exercise), :method => :get) %>

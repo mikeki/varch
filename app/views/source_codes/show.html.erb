@@ -1,27 +1,27 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <b>Student:</b>
+  <b>Alumno:</b>
   <%= @source_code.student_id %>
 </p>
 
 <p>
-  <b>Language:</b>
+  <b>Lenguaje:</b>
   <%= @source_code.language %>
 </p>
 
 <p>
-  <b>Source Code:</b><br />
+  <b>Código fuente:</b><br />
 <pre>
 <%= @source_code.code %>
 </pre>
 </p>
 
 <p>
-  <b>Exercise:</b>
+  <b>Ejercicio:</b>
   <%= @source_code.exercise_id %>
 </p>
 
 
-<%= link_to 'Edit', edit_course_exercise_source_code_path(@exercise.course, @exercise, @source_code) %> |
-<%= link_to 'Back', course_exercise_source_codes_path(@exercise.course, @exercise) %>
+<%= link_to 'Editar', edit_course_exercise_source_code_path(@exercise.course, @exercise, @source_code) %> |
+<%= link_to 'Atrás', course_exercise_source_codes_path(@exercise.course, @exercise) %>
