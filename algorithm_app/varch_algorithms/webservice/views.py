@@ -5,14 +5,14 @@ try: import simplejson as json
 except ImportError: import json
 
 #TODO cambiarlo de lugar... por mientras esta mas comodo ahi :P
-algorithms = ctypes.cdll.LoadLibrary("/home/mamsaac/Desktop/libalgorithms.so")
+algorithms = ctypes.cdll.LoadLibrary("../clib/libalgorithms.so")
 algorithms.ld_compare.args = [ctypes.c_char_p, ctypes.c_char_p]
 algorithms.sherlock_compare.args = [ctypes.c_char_p, ctypes.c_char_p]
 
 @csrf_exempt
 def compare(request):
     req = json.loads(request.POST['params'])
-    
+    print "HOLA"
     result = []
     if 'files' not in req or 'algorithms' not in req:
         return HttpResponse(json.dumps({'error' : 'Wrong data: ' + str(req)}))
