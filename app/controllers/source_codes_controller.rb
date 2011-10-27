@@ -165,6 +165,7 @@ class SourceCodesController < ApplicationController
     
     # Process the response and saves the similarities on database
     #
+    
     @similarities = []
     case response
       when Net::HTTPSuccess, Net::HTTPRedirection
@@ -178,11 +179,13 @@ class SourceCodesController < ApplicationController
               similarity.source_code2_id = similarity2_id
               similarity.used_algorithm = key
               similarity.similarity = percentage
-              similarity.save
+              #similarity.save
+              
               @similarities << similarity
             end
           end
         end
+        Similarity.import @similarities, :validate => false
       else
         response.error!
     end

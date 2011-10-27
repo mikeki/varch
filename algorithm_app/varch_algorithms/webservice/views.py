@@ -6,8 +6,8 @@ except ImportError: import json
 import threading
 
 algorithms = ctypes.cdll.LoadLibrary("../clib/libalgorithms.so")
-algorithms.ld_compare.args = [ctypes.c_char_p, ctypes.c_char_p]
-algorithms.sherlock_compare.args = [ctypes.c_char_p, ctypes.c_char_p]
+algorithms.ld_compare.args = [ctypes.c_wchar_p, ctypes.c_wchar_p]
+algorithms.sherlock_compare.args = [ctypes.c_wchar_p, ctypes.c_wchar_p]
 
 # Returned data should have the following format in JSON:
 #    [ 
@@ -25,37 +25,25 @@ def compare(request):
     result = []
     if 'files' not in req or 'algorithms' not in req:
         return HttpResponse(json.dumps({'error' : 'Wrong data: ' + str(req)}))
-    
     files = req['files']
     for f in files:
         #get rid off spaces and make it a c-valid parameter
-        f['code'] = ctypes.c_char_p(f['code']) 
-    
-    #n corridas, cada corrida tomamos el dato a mandar y creamos un arreglo sin el
+        f['code'] = ctypes.c_wchar_p(" ".join(f['code'].split()))
     if len(files) < 2: 
         return HttpResponse(json.dumps({'error' : 'Just one file: ' + str(req)}))
     running_threads = []
-    for i in range(len(files)):
-        curr_file = files[i]
-        to_compare = filter(lambda x: x['id'] != curr_file['id'], files)
+    for ci in range(len(files)):
+        curr_file = files[ci]
+        to_compare = map(lambda p: files[p], filter(lambda x: x > ci, range(len(files))))
         if 'code' not in curr_file:
             return HttpResponse(json.dumps({'error' : 'Wrong data: ' + str(req)}))
         similarities = []
-        print "HOLA!"
         comparator = Comparator(curr_file, to_compare, result, lock, req)
         running_threads.append(comparator)
         comparator.start()
-        #for tc in to_compare:
-        #    curr_similarity = {'id' : tc['id'], 'similarity' : {}}
-        #    if '1' in req['algorithms']:
-        #        curr_similarity['similarity']['1'] = algorithms.ld_compare(curr_file['code'], tc['code'])
-        #    if '2' in req['algorithms']:
-        #        curr_similarity['similarity']['2'] = algorithms.sherlock_compare(curr_file['code'], tc['code'])
-        #    similarities.append(curr_similarity)
-        #result.append({'id' : curr_file['id'], 'similarities' : similarities})
     for t in running_threads:
         t.join()
-    print json.dumps(result)
+    print 'ya'
     return HttpResponse(json.dumps(result), mimetype='application/javascript')
 
 class Comparator(threading.Thread):

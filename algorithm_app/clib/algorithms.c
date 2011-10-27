@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <malloc.h>
 #include <string.h>
+#include <wchar.h>
 #ifndef max
 	#define max( a, b ) ( ((a) > (b)) ? (a) : (b) )
 #endif
@@ -9,9 +10,9 @@
 	#define min( a, b ) ( ((a) < (b)) ? (a) : (b) )
 #endif
 
-int levenshtein_distance(char *s,char *t, int n, int m);
+int levenshtein_distance(wchar_t *s,wchar_t *t, int n, int m);
 int minimum(int a, int b, int c);
-void ld_many(char *s, char **others, float *ld_result, int size);
+void ld_many(wchar_t *s, wchar_t **others, float *ld_result, int size);
 /**
  * Modification of sherlock program to be used as a .so
  * Modification by Manuel Aude Morales, rest of credits are listen below.
@@ -40,14 +41,13 @@ int		Ntoken = 3;
 int		Zerobits = 4;
 unsigned long	zeromask;
 int		ntoken = 0;
-char **		token;
 
-/* characters to ignore at start and end of each word */
-char *		Ignore = " \t\n";
+/* wchar_tacters to ignore at start and end of each word */
+wchar_t *		Ignore = L" \t\n";
 
-/* characters to treat as word-separators or words on their own */
-char *		Punct_full = ",.<>/?;:'\"`~[]{}\\|!@#$%^&*()-+_=";
-char *		Punct = "";
+/* wchar_tacters to treat as word-separators or words on their own */
+wchar_t *		Punct_full = L",.<>/?;:'\"`~[]{}\\|!@#$%^&*()-+_=";
+wchar_t *		Punct = L"";
 
 typedef struct Sig Sig;
 struct Sig
@@ -56,39 +56,45 @@ struct Sig
 	unsigned long	*val;
 };
 
-int sherlock_compare(char *, char *);
-void	init_token_array(void);
-Sig *	signature(char *);
+int sherlock_compare(wchar_t *, wchar_t *);
+void	init_token_array(wchar_t **	token);
+Sig *	signature(wchar_t *, wchar_t ** token);
 int	compare(Sig *, Sig *);
 
-/* read_word: read a 'word' from the input, ignoring leading characters
+/* read_word: read a 'word' from the input, ignoring leading wchar_tacters
    which are inside the 'ignore' string, and stopping if one of
-   the 'ignore' or 'punct' characters is found.
+   the 'ignore' or 'punct' wchar_tacters is found.
    Uses memory allocation to avoid buffer overflow problems.
 */
 int s_size = 0, curr_pos = 0;
-int sherlock_compare(char *s, char *n)
+int sherlock_compare(wchar_t *s, wchar_t *n)
 {
 	Sig *a, *b;
-	
-	init_token_array();
+	wchar_t **	token;
     
-	s_size = strlen(s);
-	curr_pos = 0;
-    a = signature(s);
+    int i;
+
+	/* create global array of wchar_t* and initialise all to NULL */
+	token = malloc(Ntoken * sizeof(wchar_t *));
+	for (i=0; i < Ntoken; i++)
+		token[i] = NULL;
     
-    s_size = strlen(n);
+	s_size = wcslen(s);
 	curr_pos = 0;
-    b = signature(n);
+    a = signature(s, token);
+    
+    s_size = wcslen(n);
+	curr_pos = 0;
+    b = signature(n, token);
 	return compare(a, b);
 }
 
-char * read_word(char *f, int *length, char *ignore, char *punct)
+wchar_t * read_word(wchar_t *f, int *length, wchar_t *ignore, wchar_t *punct)
 {
 	long max;
-	char *word;
+	wchar_t *word;
 	long pos;
-	char *c;
+	wchar_t *c;
 	int ch, is_ignore, is_punct;
 
 
@@ -101,29 +107,29 @@ char * read_word(char *f, int *length, char *ignore, char *punct)
 	/* allocate a buffer to hold the string */
 	pos = 0;
 	max = 128;
-	word = malloc(sizeof(char) * max);
+	word = malloc(sizeof(wchar_t) * max);
 	c = & word[pos];
 
 	/* initialise some defaults */
 	if (ignore == NULL)
-		ignore = "";
+		ignore = L"";
 	if (punct == NULL)
-		punct = "";
+		punct = L"";
 
-	/* read characters into the buffer, resizing it if necessary */
+	/* read wchar_tacters into the buffer, resizing it if necessary */
 	
 	while (s_size > curr_pos && (ch = *(f++)) != '\0') {
-		is_ignore = (strchr(ignore, ch) != NULL);
+		is_ignore = (wcschr(ignore, ch) != NULL);
         curr_pos++;
 		if (pos == 0) {
 			if (is_ignore)
-				/* ignorable char found at start, skip it */
+				/* ignorable wchar_t found at start, skip it */
 				continue;
 		}
 		if (is_ignore)
-			/* ignorable char found after start, stop */
+			/* ignorable wchar_t found after start, stop */
 			break;
-		is_punct = (strchr(punct, ch) != NULL);
+		is_punct = (wcschr(punct, ch) != NULL);
 		if (is_punct && (pos > 0)) {
 			f--;
 			break;
@@ -169,35 +175,25 @@ int ulcmp(const void *p1, const void *p2)
 		return 1;
 }
 
-/* hash:  hash an array of char* into an unsigned long hash code */
-unsigned long hash(char *tok[])
+/* hash:  hash an array of wchar_t* into an unsigned long hash code */
+unsigned long hash(wchar_t *tok[])
 {
 	unsigned long h;
-	unsigned char *s;
+	wchar_t *s;
 	int i;
 
 	h = 0;
 	for (i=0; i < Ntoken; i++)
-		for (s=(unsigned char*)tok[i]; *s; s++)
+		for (s=(wchar_t*)tok[i]; *s; s++)
 			h = h*31 + *s;
 	return h;
 }
 
-void init_token_array(void)
-{
-	int i;
-
-	/* create global array of char* and initialise all to NULL */
-	token = malloc(Ntoken * sizeof(char*));
-	for (i=0; i < Ntoken; i++)
-		token[i] = NULL;
-}
-
-Sig * signature(char *f)
+Sig * signature(wchar_t *f, wchar_t ** token)
 {
 	int nv, na;
 	unsigned long *v, h;
-	char *str;
+	wchar_t *str;
 	int i, ntoken;
 	Sig *sig;
 	
@@ -282,14 +278,14 @@ int compare(Sig *s0, Sig *s1)
 	return 100 * nsimilar / (s0->nval + s1->nval - nsimilar);
 }
 
-void ld_many(char *s, char **others, float *ld_result, int size)
+void ld_many(wchar_t *s, wchar_t **others, float *ld_result, int size)
 {
 	int i;
 	int *sizes = (int *) malloc(sizeof(int) * size);
-	int mysize = strlen(s);
+	int mysize = wcslen(s);
 	int min;
 	for (i = 0; i < size; i++) {
-		sizes[i] = strlen(others[i]);
+		sizes[i] = wcslen(others[i]);
 	}
 	
 	for (i = 0; i < size; i++) 
@@ -305,9 +301,9 @@ void ld_many(char *s, char **others, float *ld_result, int size)
 	free(sizes);
 }
 
-int ld_compare(char *s, char *t)
+int ld_compare(wchar_t *s, wchar_t *t)
 {
-	int mini, size1 = strlen(s), size2 = strlen(t);
+	int mini, size1 = wcslen(s), size2 = wcslen(t);
 	float res;
 	mini = max(size1, size2);
 	res = 1 - (
@@ -318,7 +314,7 @@ int ld_compare(char *s, char *t)
 }
 
 
-int levenshtein_distance(char *s,char *t, int n, int m)
+int levenshtein_distance(wchar_t *s,wchar_t *t, int n, int m)
 {
   int k, i, j, cost, *d, distance;
   if(n!=0&&m!=0)
