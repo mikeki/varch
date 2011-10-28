@@ -1,8 +1,3 @@
-require 'zip'
-require 'find'
-require 'uri'
-require 'net/http'
-
 class SourceCodesController < ApplicationController
   before_filter :find_exercise
   
@@ -15,7 +10,7 @@ class SourceCodesController < ApplicationController
   # GET /source_codes.xml
   def index
     @source_codes = @exercise.source_codes
-    @input = SimilarityInput.new
+#    @input = SimilarityInput.new
 
     respond_to do |format|
       format.html # index.html.erb
@@ -98,54 +93,15 @@ class SourceCodesController < ApplicationController
   def upload_file
     tmp = params[:zip_file][:file].tempfile
     file = "#{RAILS_ROOT}/public/zipfiles/#{params[:zip_file][:file].original_filename.tr(' ','-')}"
+    Dir.mkdir(File.dirname(file)) if !File.exists?(File.dirname(file))
     FileUtils.cp(tmp.path, file)
-    unzip(file, "#{RAILS_ROOT}/public/zipfiles")
+    SourceCode.unzip(file, "#{RAILS_ROOT}/public/zipfiles", @exercise)
     FileUtils.rm(file)
-    redirect_to course_exercise_path(@exercise.course, @exercise)
-  end
-  
-  def unzip(file, to)
-    if !File.exists?( to )
-      FileUtils.mkdir( to )
-    end
-    #open Zip File
-    zip_file = Zip::ZipFile.open(file)
-    #UnZip file
-    zip_file.reverse_each do |entry|
-      
-      file_path = File.join( to, entry.to_s )
-      if File.exists?( file_path ) && !File.directory?(file_path)
-        FileUtils.rm( file_path )
-      end
-      zip_file.extract( entry, file_path )
-    end
-    copy_to_database(file)
-  end
-  
-  def copy_to_database(file)
-    file_path = file.chomp(".zip")
-    Find.find(file_path) do |subfile|
-      if subfile != file_path
-        if !File.directory?(subfile) && !File.extname(subfile).index('~')
-          @source_code = @exercise.source_codes.build
-          @source_code.language = File.extname(subfile)
-          @source_code.student_id = File.basename(subfile, @source_code.language)
-          file = File.open(subfile, "r")
-          code = ""
-          while(line = file.gets)
-            code+=line
-          end
-          @source_code.code = code
-          @source_code.save
-        end
-      end
-    end
-    FileUtils.rm_rf(file_path)
+    redirect_to course_exercise_source_codes_path(@exercise.course, @exercise)
   end
    
   def compare
     # Prepare variables for the HASH
-    #
     json = ActiveSupport::JSON
     algorithms = params[:algorithms]
     files = []
@@ -155,40 +111,14 @@ class SourceCodesController < ApplicationController
     end
     
     # Create parameters HASH
-    #
     parametros = {}
     parametros[:params] = json.encode({:algorithms => algorithms, :files => files})
     
-    # Sends HTTP post to python webservice that runds the algorithms
-    #
+    # Sends HTTP post to python webservice that runs the algorithms
     response = Net::HTTP.post_form(URI.parse('http://localhost:3001/compare'), parametros)
     
     # Process the response and saves the similarities on database
-    #
-    
-    @similarities = []
-    case response
-      when Net::HTTPSuccess, Net::HTTPRedirection
-        json.decode(response.body).each do |data_hash|
-          similarity1_id = data_hash["id"]
-          data_hash["similarities"].each do |compared|
-            similarity2_id = compared["id"]
-            compared["similarity"].each do |key, percentage|
-              similarity = Similarity.new
-              similarity.source_code1_id = similarity1_id
-              similarity.source_code2_id = similarity2_id
-              similarity.used_algorithm = key
-              similarity.similarity = percentage
-              #similarity.save
-              
-              @similarities << similarity
-            end
-          end
-        end
-        Similarity.import @similarities, :validate => false
-      else
-        response.error!
-    end
+    @similarities = Similarity.create_from_response(response)
   end
    
 end
