@@ -1,3 +1,5 @@
+require 'net/http'
+
 class SourceCodesController < ApplicationController
   before_filter :find_exercise
   

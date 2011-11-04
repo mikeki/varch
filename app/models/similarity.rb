@@ -5,6 +5,7 @@ class Similarity < ActiveRecord::Base
   
   belongs_to :source_code1, :class_name=> "SourceCode", :foreign_key => :source_code1_id
   belongs_to :source_code2, :class_name=> "SourceCode", :foreign_key => :source_code2_id
+  has_many :algorithms
   
   
   def self.create_from_response(response)
@@ -19,8 +20,8 @@ class Similarity < ActiveRecord::Base
               similarity = Similarity.new
               similarity.source_code1_id = similarity1_id
               similarity.source_code2_id = similarity2_id
-              similarity.used_algorithm = key
-              similarity.similarity = percentage
+              similarity.algorithm.build(:type=>key, :percentage=>percentage)
+              #similarity.similarity = percentage
               #similarity.save
               
               similarities << similarity

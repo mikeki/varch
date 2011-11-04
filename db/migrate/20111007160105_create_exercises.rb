@@ -4,6 +4,7 @@ class CreateExercises < ActiveRecord::Migration
       t.string :name
       t.text :description
       t.float :similarity_avarage
+      t.float :mar
       t.integer :user_id
       t.integer :course_id
 

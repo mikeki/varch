@@ -3,9 +3,6 @@ class CreateSimilarities < ActiveRecord::Migration
     create_table :similarities do |t|
       t.integer :source_code1_id
       t.integer :source_code2_id
-      t.float :similarity
-      t.float :mar
-      t.string :used_algorithm
 
       t.timestamps
     end

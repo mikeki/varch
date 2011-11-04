@@ -10,7 +10,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111026011627) do
+ActiveRecord::Schema.define(:version => 20111031011254) do
+
+  create_table "algorithms", :force => true do |t|
+    t.integer  "type"
+    t.float    "percentage"
+    t.integer  "similarity_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "courses", :force => true do |t|
     t.string   "name"
@@ -23,6 +31,7 @@ ActiveRecord::Schema.define(:version => 20111026011627) do
     t.string   "name"
     t.text     "description"
     t.float    "similarity_avarage"
+    t.float    "mar"
     t.integer  "user_id"
     t.integer  "course_id"
     t.datetime "created_at"
@@ -32,9 +41,6 @@ ActiveRecord::Schema.define(:version => 20111026011627) do
   create_table "similarities", :force => true do |t|
     t.integer  "source_code1_id"
     t.integer  "source_code2_id"
-    t.float    "similarity"
-    t.float    "mar"
-    t.string   "used_algorithm"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
