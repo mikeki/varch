@@ -36,3 +36,4 @@ gem 'activerecord-import'
 # group :development, :test do
 #   gem 'webrat'
 # end
+gem 'jquery-rails'
