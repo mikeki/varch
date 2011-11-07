@@ -155,6 +155,11 @@ a.botonaz{
   -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
 }
 
+a {
+ 	color: #0D3B7C;
+	font-weight:bold;
+}
+
 a.botones:link, a.botonoff:link {
   text-decoration:none;
 }
