@@ -1,5 +1,9 @@
 <p id="notice"><%= notice %></p>
 
+<!--Los siguientes links se repiten por si el codigo esta muy largo -->
+<%= link_to 'Editar', edit_course_exercise_source_code_path(@exercise.course, @exercise, @source_code) %> |
+<%= link_to 'Atrás', course_exercise_source_codes_path(@exercise.course, @exercise) %>
+
 <p>
   <b>Alumno:</b>
   <%= @source_code.student_id %>

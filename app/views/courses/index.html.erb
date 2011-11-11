@@ -8,9 +8,13 @@
     <th></th>
   </tr>
 
+<scritp>
+
+</script>
+
 <% @courses.each do |course| %>
   <tr>
-    <td><%= link_to course.name, course %></td>
+    <td><%= link_to course.name, course_exercises_path(course) %></td>
     <td><%= course.courseid %></td>
     <td><%= link_to 'Editar', edit_course_path(course) %></td>
     <td><%= link_to 'Eliminar', course, :confirm => 'Estás seguro?', :method => :delete %></td>
