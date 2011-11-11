@@ -8,7 +8,7 @@ class ExercisesController < ApplicationController
   # GET /exercises
   # GET /exercises.xml
   def index
-    @exercises = @course.exercises
+    @exercises = @course.exercises.order("similarity_avarage desc")
 
     respond_to do |format|
       format.html # index.html.erb

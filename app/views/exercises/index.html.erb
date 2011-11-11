@@ -12,7 +12,7 @@
     <th></th>
   </tr>
 
-<% @exercises.each.order(:) do |exercise| %>
+<% @exercises.each do |exercise| %>
   <tr>
     <td><%= exercise.name %></td>
     <td><%= exercise.description %></td>
