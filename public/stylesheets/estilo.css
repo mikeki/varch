@@ -158,7 +158,11 @@ a.botonaz{
 a {
  	color: #0D3B7C;
 	font-weight:bold;
+	text-decoration:none;
+	
 }
+
+a:hover {color: red;}
 
 a.botones:link, a.botonoff:link {
   text-decoration:none;
