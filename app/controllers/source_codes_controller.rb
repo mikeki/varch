@@ -120,7 +120,7 @@ class SourceCodesController < ApplicationController
     response = Net::HTTP.post_form(URI.parse('http://localhost:3001/compare'), parametros)
     
     # Process the response and saves the similarities on database
-    @similarities = Similarity.create_from_response(response)
+    @similarities = Similarity.create_from_response(response, @exercise)
   end
    
 end

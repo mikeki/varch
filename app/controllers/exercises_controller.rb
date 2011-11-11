@@ -87,4 +87,9 @@ class ExercisesController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def comparison
+    @exercise = @course.exercises.find(params[:id])
+    @similarities = @exercise.similarities
+  end
 end
