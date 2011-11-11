@@ -12,14 +12,6 @@
 
 ActiveRecord::Schema.define(:version => 20111106010434) do
 
-  create_table "algorithms", :force => true do |t|
-    t.integer  "type"
-    t.float    "percentage"
-    t.integer  "similarity_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "courses", :force => true do |t|
     t.string   "name"
     t.string   "courseid"
@@ -41,6 +33,9 @@ ActiveRecord::Schema.define(:version => 20111106010434) do
   create_table "similarities", :force => true do |t|
     t.integer  "source_code1_id"
     t.integer  "source_code2_id"
+    t.float    "algorithm_1"
+    t.float    "algorithm_2"
+    t.float    "algorithm_3"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "exercise_id"
