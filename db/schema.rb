@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111031011254) do
+ActiveRecord::Schema.define(:version => 20111106010434) do
 
   create_table "algorithms", :force => true do |t|
     t.integer  "type"
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(:version => 20111031011254) do
     t.integer  "source_code2_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "exercise_id"
   end
 
   create_table "source_codes", :force => true do |t|

@@ -2,15 +2,19 @@
     <tr>
         <th>File 1</th>
         <th>File2</th>
-        <th>Algoritmo usado</th>
+        <th>Algoritmo 1</th>
+        <th>Algoritmo 2</th>
+        <th>ALgoritmo 3</th>
         <th>Porcentaje</th>
     </tr>
     <% @similarities.each do |sim|%>
     <tr>
         <td><%= sim.source_code1.student_id%></td>
         <td><%= sim.source_code2.student_id%></td>
-        <td><%= sim.used_algorithm%></td>
-        <td><%= sim.similarity%></td>
+        <td><%= sim.algorithms.first.percentage %></td>
+        <td><%= sim.algorithms.first.percentage %></td>
+        <td><%= sim.algorithms.first.percentage %></td>
+        <td><%= sim.algorithms.select("AVG(percentage)").first.percentage %></td>
     </tr>
     <%end%>
 </table>
