@@ -1,9 +1,9 @@
-<h1>Listing courses</h1>
+<h1>Listado de Cursos</h1>
 
 <table class="sortable" id="sorttableTable2">
   <tr>
-    <th>Nombre</th>
-    <th>CursoID</th>
+    <th>Clave</th>
+    <th>Curso</th>
     <th></th>
     <th></th>
   </tr>
@@ -14,8 +14,8 @@
 
 <% @courses.each do |course| %>
   <tr>
-    <td><%= link_to course.name, course_exercises_path(course) %></td>
     <td><%= course.courseid %></td>
+    <td><%= link_to course.name, course_exercises_path(course) %></td>
     <td><%= link_to 'Editar', edit_course_path(course) %></td>
     <td><%= link_to 'Eliminar', course, :confirm => 'Estás seguro?', :method => :delete %></td>
   </tr>

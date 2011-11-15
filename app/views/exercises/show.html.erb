@@ -1,18 +1,13 @@
 <p id="notice"><%= notice %></p>
 
 <p id="name_show_exercise">
-	<b>Nombre:</b>
+	<b>Ejercicio:</b>
 	<%= @exercise.name %>
 </p>
 
 <p id="else_show_exercise">
   <b>Descripción:</b>
   <%= @exercise.description %>
-</p>
-
-<p id="else_show_exercise">
-  <b>Promedio de similitud:</b>
-  <%= @exercise.similarity_avarage %>
 </p>
 
 <p id="else_show_exercise">
@@ -26,9 +21,12 @@
 </p>
 
 <p id="else_show_exercise">
-  <b>Codigo fuente:</b>
-  <%= link_to 'Mostrar', course_exercise_source_codes_path(@course, @exercise) %>  
-  <%= link_to 'Nuevo', new_course_exercise_source_code_path(@course, @exercise) %>
+  <b>Similitudes:</b>
+  <ul>
+  <li><%= link_to 'Analizar', course_exercise_source_codes_path(@course, @exercise) %></li>
+  <li><%= link_to 'Subir Códigos Fuente', new_course_exercise_source_code_path(@course, @exercise) %></li>
+  <li><%= link_to 'Ver Códigos Comparados', comparison_course_exercise_path(@course, @exercise)%></li>
+  </ul>
 
 </p>	
 <table>

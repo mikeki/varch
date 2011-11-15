@@ -158,8 +158,12 @@ a.botonaz{
 a {
  	color: #0D3B7C;
 	font-weight:bold;
-	text-decoration:none;
+	text-decoration:underline;
 	
+}
+
+th a{
+  text-decoration: none;
 }
 
 a:hover {color: red;}
