@@ -93,4 +93,9 @@ class ExercisesController < ApplicationController
     @exercise = @course.exercises.find(params[:id])
     @similarities = @exercise.similarities
   end
+  
+  def view_similarity
+    @exercise = @course.exercises.find(params[:exercise_id])
+    @similarity = @exercise.similarities.find(params[:id])
+  end
 end

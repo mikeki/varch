@@ -7,14 +7,16 @@
         <th>Algoritmo 1</th>
         <th>Algoritmo 2</th>
         <th>Algoritmo 3</th>
+        <th></th>
     </tr>
     <% @similarities.each do |sim|%>
     <tr>
         <td><%= sim.source_code1.student_id%></td>
         <td><%= sim.source_code2.student_id%></td>
-        <td><%= sim.algorithm_1 %></td>
-        <td><%= sim.algorithm_2 %></td>
-        <td><%= sim.algorithm_3 %></td>
+        <td><%= importance_of_similarity(sim, sim.algorithm_1) %></td>
+        <td><%= importance_of_similarity(sim, sim.algorithm_2) %></td>
+        <td><%= importance_of_similarity(sim, sim.algorithm_3) %></td>
+        <td><%= link_to "ver", view_course_exercise_similarity_path(@course, sim.exercise, sim)%></td>
     </tr>
     <%end%>
 </table>

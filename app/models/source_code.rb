@@ -43,7 +43,7 @@ class SourceCode < ActiveRecord::Base
         if !File.directory?(subfile) && !File.extname(subfile).index('~')
           @source_code = exercise.source_codes.build
           @source_code.language = File.extname(subfile)
-          @source_code.student_id = File.basename(subfile, @source_code.language)
+          @source_code.student_id = File.dirname(subfile).split("/").last
           file = File.open(subfile, "r")
           code = ""
           while(line = file.gets)

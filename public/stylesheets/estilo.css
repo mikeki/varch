@@ -427,3 +427,22 @@ p
 	font-size: 17px;
 	text-indent: 25px;
 }
+
+
+/* ******************************************************************** */ 
+/* Clearfix: http://csscreator.com/attributes/containedfloat.php        */
+/* ******************************************************************** */
+.clearfix:after {
+ content: "."; 
+ display: block; 
+height: 0; 
+ clear: both; 
+ visibility: hidden;
+ }
+ 
+.clearfix{display: inline-block;}
+
+/* Hides from IE-mac \*/
+* html .clearfix{height: 1%;}
+.clearfix{display: block;}
+/* End hide from IE-mac */  

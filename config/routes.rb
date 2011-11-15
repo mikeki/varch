@@ -1,6 +1,11 @@
 Varch::Application.routes.draw do
   resources :courses do
     resources :exercises do
+      resources :similarities do
+        member do
+          get 'view' => "exercises#view_similarity", :as => :view
+        end
+      end
       resources :source_codes
       post 'upload' => "source_codes#upload_file", :as => :upload_file
       post 'compare' => "source_codes#compare", :as => :compare
