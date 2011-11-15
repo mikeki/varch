@@ -1,5 +1,6 @@
 class ExercisesController < ApplicationController
   before_filter :find_course
+  before_filter :logged_in?
   
   def find_course
     @course = Course.find(params[:course_id])

@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  before_filter :logged_in?
+
   # GET /users
   # GET /users.xml
   def index
