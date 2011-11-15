@@ -2,6 +2,7 @@ require 'net/http'
 
 class SourceCodesController < ApplicationController
   before_filter :find_exercise
+  before_filter :logged_in?
   
   def find_exercise
     @exercise= Exercise.find(params[:exercise_id])
