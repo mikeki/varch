@@ -10,21 +10,19 @@
     <strong>Algoritmo 3</strong>: <%= @similarity.algorithm_3%>
   </p>
 </div>
-<div class="wrapper clearfix">
-  <div style="float:left">
+<%= link_to "Atras", :back%>
+<br /><br/><br />
+<div class="clearfix">
+  <div style="float:left; width:47%;">
     <strong><%= @similarity.source_code1.student_id%></strong>
     <br />
-    <pre>
-      <%= @similarity.source_code1.code%>
-    </pre>
+      <%= @similarity.source_code1.code.gsub("\n", "<br/>").html_safe%>
   </div>
-  <div style="float:left;margin-left: 30px;">
+  <div style="float:left;margin-left: 30px;width:49%;">
     <strong><%= @similarity.source_code2.student_id%></strong>
     <br />
-    <pre>
-      <%= @similarity.source_code2.code%>
-    </pre>
+      <%= @similarity.source_code2.code.gsub("\n", "<br/>").html_safe%>
   </div>
 </div>
-
-<%= link_to "atras", :back%>
+<br /><br /><br />
+<%= link_to "Atras", :back%>

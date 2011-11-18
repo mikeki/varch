@@ -91,7 +91,7 @@ function ts_resortTable(lnk, clid) {
 	// Work out a type for the column
 	if (t.rows.length <= 1) return;
 	var itm = "";
-	var i = 0;
+	var i = 1;
 	while (itm == "" && i < t.tBodies[0].rows.length) {
 		var itm = ts_getInnerText(t.tBodies[0].rows[i].cells[column]);
 		itm = trim(itm);
@@ -100,7 +100,7 @@ function ts_resortTable(lnk, clid) {
 		}
 		i++;
 	}
-	if (itm == "") return; 
+	if (itm == "") return;
 	sortfn = ts_sort_caseinsensitive;
 	if (itm.match(/^\d\d[\/\.-][a-zA-z][a-zA-Z][a-zA-Z][\/\.-]\d\d\d\d$/)) sortfn = ts_sort_date;
 	if (itm.match(/^\d\d[\/\.-]\d\d[\/\.-]\d\d\d{2}?$/)) sortfn = ts_sort_date;
@@ -232,6 +232,8 @@ function ts_sort_date(a,b) {
 	}
 	return 1;
 }
+
+//obtiene los numeros de las columnas
 function ts_sort_numeric(a,b) {
 	var aa = ts_getInnerText(a.cells[SORT_COLUMN_INDEX]);
 	aa = clean_num(aa);
@@ -239,6 +241,7 @@ function ts_sort_numeric(a,b) {
 	bb = clean_num(bb);
 	return compare_numeric(aa,bb);
 }
+//regresa un numero negativo si a es menor que b
 function compare_numeric(a,b) {
 	var a = parseFloat(a);
 	a = (isNaN(a) ? 0 : a);
@@ -246,6 +249,7 @@ function compare_numeric(a,b) {
 	b = (isNaN(b) ? 0 : b);
 	return a - b;
 }
+
 function ts_sort_caseinsensitive(a,b) {
 	aa = ts_getInnerText(a.cells[SORT_COLUMN_INDEX]).toLowerCase();
 	bb = ts_getInnerText(b.cells[SORT_COLUMN_INDEX]).toLowerCase();
