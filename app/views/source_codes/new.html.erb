@@ -5,11 +5,11 @@
 <% form_for @zipfile, :html => {:multipart => true}, :url =>  course_exercise_upload_file_path(@exercise.course, @exercise) do |f| -%>
   <div>
     <%= f.label :file %><br />
-    <%= f.file_field :file %>
+    <%= f.file_field( :file, :class=>'boton_archivo' )%>
   </div>
   <div>
     <%= f.submit%>
   </div>
 <% end -%>
 
-<%= link_to 'Atrás', course_exercise_source_codes_path(@exercise.course, @exercise) %>
+<%= link_to 'Atrás', :back %>

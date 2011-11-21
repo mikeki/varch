@@ -397,14 +397,14 @@ th#porBloques:hover,th#porMatricula:hover{
 }
 
 /* Estilos para inputs y botones */
-input[type=text], input[type=password] {
+input[type=text],input[type=password]{
 	font-size: 15px;
 	padding-left: 3px;
 	height: 26px;
 	border-radius: 5px 5px 5px 5px;
 }
 
-input[type=submit], input[type=button] {
+input[type=submit], input[type=button]/*,input[type=file]*/{
 	font-size: 15px;
 	margin: 5px 5px 5px 0;
 	min-width: 90px;
@@ -417,6 +417,13 @@ input[type=submit], input[type=button] {
 	color:#FFFFFF;
 	font-weight: bold;
 }
+
+/*Estilos para clase tipo "field" y labels*/
+.field,label {
+  color: #0D3B7C;
+	font-weight:bold;
+}
+
 
 /*Tables*/
 table
@@ -469,6 +476,11 @@ p
 /*fieldsets*/
 .el01 {border:none;}
 /*---fieldsets*/
+
+/*boton de subir archivo*/
+.boton_archivo {
+width:170px;
+}
 
 /* ******************************************************************** */ 
 /* Clearfix: http://csscreator.com/attributes/containedfloat.php        */
