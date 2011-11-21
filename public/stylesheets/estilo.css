@@ -466,6 +466,9 @@ p
 	text-indent: 25px;
 }
 
+/*fieldsets*/
+.el01 {border:none;}
+/*---fieldsets*/
 
 /* ******************************************************************** */ 
 /* Clearfix: http://csscreator.com/attributes/containedfloat.php        */

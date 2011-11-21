@@ -1,18 +1,22 @@
-<h1>Listing source_codes</h1>
+
+<h1>Comparacion de Codigos Fuentes</h1>
 
 <% form_tag course_exercise_compare_path(@exercise.course, @exercise) do |f| -%>
   <div>
-    Algoritmos:<br />
+<fieldset class="el01">
+    <%= check_box_tag '-1',"",false,:class=>"checkall"%> Algoritmos:<br />
     <%= check_box_tag "algorithms[]", "1"%>
     <%= label_tag :algorithms_1, 'Algoritmo 1'%>
     <%= check_box_tag "algorithms[]", "2"%><%= label_tag :algorithms_2, 'Algoritmo 2'%>
     <%= check_box_tag "algorithms[]", "3"%><%= label_tag :algorithms_3, 'Algoritmo 3'%>
+</fieldset>
   </div>
   <br />
+<fieldset class="el01">
 <table>
   <tr>
 	<!--checkbox (select all)-->
-	  <th><%= check_box_tag :select_all%></th>
+	  <th><%= check_box_tag '-1',"",false,:class=>"checkall"%></th>
     <th>Alumno</th>
     <th>Ejercicio</th>
     <th></th>
@@ -38,7 +42,7 @@
       </td>
     </tr>
   </table>
-
+</fieldset>
 <% end -%>
 <br />
 

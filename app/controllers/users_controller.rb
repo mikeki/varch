@@ -77,6 +77,7 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     @user.destroy
+    session[:user_id] = nil if @user ==  current_user
 
     respond_to do |format|
       format.html { redirect_to(users_url) }
