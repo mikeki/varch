@@ -18,3 +18,5 @@ pickle-email-*.html
 *.*~
 /algorithm_app/clib/*.so
 /algorithm_app/clib/*.o
+**.pyc
+
