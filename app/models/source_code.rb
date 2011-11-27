@@ -4,8 +4,8 @@ require 'find'
 class SourceCode < ActiveRecord::Base
   belongs_to :exercise, :class_name => "Exercise", :foreign_key => :exercise_id
  
-  has_many :similarity1, :class_name => "Similarity", :foreign_key => :source_code1_id
-  has_many :similarity2, :class_name => "Similarity", :foreign_key => :source_code2_id
+  has_many :similarity1, :class_name => "Similarity", :foreign_key => :source_code1_id, :dependent => :destroy
+  has_many :similarity2, :class_name => "Similarity", :foreign_key => :source_code2_id, :dependent => :destroy
   
   
   def self.unzip(file, to, exercise)
@@ -38,23 +38,27 @@ class SourceCode < ActiveRecord::Base
   
   def self.copy_to_database(file, exercise)
     file_path = file.chomp(".zip")
-    Find.find(file_path) do |subfile|
-      if subfile != file_path
-        if !File.directory?(subfile) && !File.extname(subfile).index('~')
-          @source_code = exercise.source_codes.build
-          @source_code.language = File.extname(subfile)
-          @source_code.student_id = File.dirname(subfile).split("/").last
-          file = File.open(subfile, "r")
-          code = ""
-          while(line = file.gets)
-            code+=line.encode("UTF-8")
+    begin
+      Find.find(file_path) do |subfile|
+        if subfile != file_path
+          if !File.directory?(subfile) && !File.extname(subfile).index('~')
+            @source_code = exercise.source_codes.build
+            @source_code.language = File.extname(subfile)
+            @source_code.student_id = File.dirname(subfile).split("/").last
+            file = File.open(subfile, "r")
+            code = ""
+            while(line = file.gets)
+              code+=line.encode("UTF-8")
+            end
+            @source_code.code = code.encode("UTF-8")
+            @source_code.save
           end
-          @source_code.code = code.encode("UTF-8")
-          @source_code.save
         end
       end
+      FileUtils.rm_rf(file_path)
+    rescue
+      puts "error en #{file_path}"
     end
-    FileUtils.rm_rf(file_path)
   end
   
 end

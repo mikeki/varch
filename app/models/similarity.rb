@@ -33,7 +33,7 @@ class Similarity < ActiveRecord::Base
       else
         response.error!
     end
-    similarities
+    Similarity.last(similarities.size)
   end
   
 end

@@ -16,7 +16,7 @@
         <td><%= importance_of_similarity(sim, sim.algorithm_1) %></td>
         <td><%= importance_of_similarity(sim, sim.algorithm_2) %></td>
         <td><%= importance_of_similarity(sim, sim.algorithm_3) %></td>
-        <td><%= link_to "ver", view_course_exercise_similarity_path(sim.exercise.course, sim.exercise, sim)%></td>
+        <td><%= link_to "ver", view_course_exercise_similarity_path(sim.exercise.course.id, sim.exercise.id, sim.id)%></td>
     </tr>
     <%end%>
 </table>
