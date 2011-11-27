@@ -43,7 +43,7 @@ def compare(request):
         comparator.start()
     for t in running_threads:
         t.join()
-    print 'ya'
+    print json.dumps(result)
     return HttpResponse(json.dumps(result), mimetype='application/javascript')
 
 class Comparator(threading.Thread):

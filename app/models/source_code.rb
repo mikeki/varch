@@ -47,9 +47,9 @@ class SourceCode < ActiveRecord::Base
           file = File.open(subfile, "r")
           code = ""
           while(line = file.gets)
-            code+=line
+            code+=line.encode("UTF-8")
           end
-          @source_code.code = code
+          @source_code.code = code.encode("UTF-8")
           @source_code.save
         end
       end

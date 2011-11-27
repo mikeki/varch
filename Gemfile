@@ -11,7 +11,7 @@ gem "bcrypt-ruby", :require => "bcrypt"
 gem 'railroady'
 gem 'rubyzip2'
 #gem 'fastercsv'
-#gem 'ruby-debug19', :require => 'ruby-debug'
+gem 'ruby-debug19', :require => 'ruby-debug'
 #gem 'ar-extensions'
 gem 'activerecord-import'
 # Use unicorn as the web server
