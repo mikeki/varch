@@ -31,8 +31,12 @@ def compare(request):
     for f in files:
         #get rid off spaces and make it a c-valid parameter
         #keep a copy for the third algorithm which requires line jumps and such
-        f['code2'] = ctypes.c_wchar_p(f['code'])
-        f['code'] = ctypes.c_wchar_p(" ".join(f['code'].split()))
+        try:
+            f['code'] = unicode(f['code'])
+            f['code2'] = ctypes.c_wchar_p(f['code'])
+            f['code'] = ctypes.c_wchar_p(" ".join(f['code'].split()))
+        except Exception as (errno, errstr):
+            print errstr
     if len(files) < 2: 
         return HttpResponse(json.dumps({'error' : 'Just one file: ' + str(req)}))
     running_threads = []
@@ -67,7 +71,10 @@ class Comparator(threading.Thread):
             if '1' in self.req['algorithms']:
                 curr_similarity['similarity']['1'] = algorithms.ld_compare(curr_file['code'], tc['code'])
             if '2' in self.req['algorithms']:
+                #print curr_file['code']
+                #print tc['code']
                 curr_similarity['similarity']['2'] = algorithms.sherlock_compare(curr_file['code'], tc['code'])
+                
             #if '3' in self.req['algorithms']:
             #    curr_similarity['similarity']['3'] = algorithms.varch_compare(curr_file['code2'], tc['code2'])
             similarities.append(curr_similarity)

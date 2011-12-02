@@ -37,15 +37,15 @@ void ld_many(wchar_t *s, wchar_t **others, float *ld_result, int size);
 #include <string.h>
 #include <stdio.h>
 
-int		Ntoken = 3;
-int		Zerobits = 4;
+int		Ntoken = 1;
+int		Zerobits = 0;
 unsigned long	zeromask;
 int		ntoken = 0;
 
-/* wchar_tacters to ignore at start and end of each word */
+/* wchar to ignore at start and end of each word */
 wchar_t *		Ignore = L" \t\n";
 
-/* wchar_tacters to treat as word-separators or words on their own */
+/* wchar to treat as word-separators or words on their own */
 wchar_t *		Punct_full = L",.<>/?;:'\"`~[]{}\\|!@#$%^&*()-+_=";
 wchar_t *		Punct = L"";
 
@@ -63,15 +63,15 @@ int	compare(Sig *, Sig *);
 
 /* read_word: read a 'word' from the input, ignoring leading wchar_tacters
    which are inside the 'ignore' string, and stopping if one of
-   the 'ignore' or 'punct' wchar_tacters is found.
+   the 'ignore' or 'punct' wchar is found.
    Uses memory allocation to avoid buffer overflow problems.
 */
 int s_size = 0, curr_pos = 0;
 int sherlock_compare(wchar_t *s, wchar_t *n)
 {
 	Sig *a, *b;
+    int res;
 	wchar_t **	token;
-    
     int i;
 
 	/* create global array of wchar_t* and initialise all to NULL */
@@ -86,7 +86,11 @@ int sherlock_compare(wchar_t *s, wchar_t *n)
     s_size = wcslen(n);
 	curr_pos = 0;
     b = signature(n, token);
-	return compare(a, b);
+    
+	res = compare(a, b);
+    free(a);
+    free(b);
+    return res;
 }
 
 wchar_t * read_word(wchar_t *f, int *length, wchar_t *ignore, wchar_t *punct)
@@ -275,7 +279,8 @@ int compare(Sig *s0, Sig *s1)
 		return 100;	/* perfect match if all hash codes match */
 
 	nsimilar = nboth / 2;
-	return 100 * nsimilar / (s0->nval + s1->nval - nsimilar);
+	//return 100 * nsimilar / (s0->nval + s1->nval - nsimilar);
+    return 100 * (nsimilar + nsimilar) / (s0->nval + s1->nval);
 }
 
 void ld_many(wchar_t *s, wchar_t **others, float *ld_result, int size)
