@@ -37,7 +37,7 @@ void ld_many(wchar_t *s, wchar_t **others, float *ld_result, int size);
 #include <string.h>
 #include <stdio.h>
 
-int		Ntoken = 1;
+int		Ntoken = 30;
 int		Zerobits = 0;
 unsigned long	zeromask;
 int		ntoken = 0;
@@ -279,8 +279,8 @@ int compare(Sig *s0, Sig *s1)
 		return 100;	/* perfect match if all hash codes match */
 
 	nsimilar = nboth / 2;
-	//return 100 * nsimilar / (s0->nval + s1->nval - nsimilar);
-    return 100 * (nsimilar + nsimilar) / (s0->nval + s1->nval);
+	return 100 * nsimilar / (s0->nval + s1->nval - nsimilar);
+    //return 100 * (nsimilar + nsimilar) / (s0->nval + s1->nval);
 }
 
 void ld_many(wchar_t *s, wchar_t **others, float *ld_result, int size)
