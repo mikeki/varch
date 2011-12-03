@@ -16,12 +16,12 @@
   <div style="float:left; width:47%;">
     <strong><%= @similarity.source_code1.student_id%></strong>
     <br />
-      <%= @similarity.source_code1.code.gsub("\n", "<br/>").html_safe%>
+      <%= h(@similarity.source_code1.code).gsub("\n", "<br/>").html_safe%>
   </div>
   <div style="float:left;margin-left: 30px;width:49%;">
     <strong><%= @similarity.source_code2.student_id%></strong>
     <br />
-      <%= @similarity.source_code2.code.gsub("\n", "<br/>").html_safe%>
+      <%= h(@similarity.source_code2.code).gsub("\n", "<br/>").html_safe%>
   </div>
 </div>
 <br /><br /><br />
