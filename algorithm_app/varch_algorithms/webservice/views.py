@@ -74,6 +74,7 @@ class Comparator(threading.Thread):
                 #print curr_file['code']
                 #print tc['code']
                 curr_similarity['similarity']['2'] = algorithms.sherlock_compare(curr_file['code'], tc['code'])
+                #print curr_similarity['similarity']['2']
                 
             #if '3' in self.req['algorithms']:
             #    curr_similarity['similarity']['3'] = algorithms.varch_compare(curr_file['code2'], tc['code2'])

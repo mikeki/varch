@@ -37,16 +37,16 @@ void ld_many(wchar_t *s, wchar_t **others, float *ld_result, int size);
 #include <string.h>
 #include <stdio.h>
 
-int		Ntoken = 30;
+int		Ntoken = 1;
 int		Zerobits = 0;
 unsigned long	zeromask;
 int		ntoken = 0;
 
 /* wchar to ignore at start and end of each word */
-wchar_t *		Ignore = L" \t\n";
+wchar_t *		Ignore = L" \t\n,.<>/?;:'\"`~[]{}\\|!@#$%^&*()-+_=";
 
 /* wchar to treat as word-separators or words on their own */
-wchar_t *		Punct_full = L",.<>/?;:'\"`~[]{}\\|!@#$%^&*()-+_=";
+wchar_t *		Punct_full = L"";
 wchar_t *		Punct = L"";
 
 typedef struct Sig Sig;
@@ -71,22 +71,23 @@ int sherlock_compare(wchar_t *s, wchar_t *n)
 {
 	Sig *a, *b;
     int res;
-	wchar_t **	token;
+	wchar_t **	token, token2;
     int i;
-
-	/* create global array of wchar_t* and initialise all to NULL */
-	token = malloc(Ntoken * sizeof(wchar_t *));
-	for (i=0; i < Ntoken; i++)
-		token[i] = NULL;
     
+	/* create array of wchar_t* and initialise all to NULL */
+	token = malloc(Ntoken * sizeof(wchar_t *));
+    token2 = malloc(Ntoken * sizeof(wchar_t *));
+	for (i=0; i < Ntoken; i++)
+    {
+		token[i] = NULL;
+        token2[i] = NULL;
+    }
 	s_size = wcslen(s);
 	curr_pos = 0;
     a = signature(s, token);
-    
     s_size = wcslen(n);
 	curr_pos = 0;
-    b = signature(n, token);
-    
+    b = signature(n, token2);    
 	res = compare(a, b);
     free(a);
     free(b);
@@ -208,6 +209,7 @@ Sig * signature(wchar_t *f, wchar_t ** token)
 	ntoken = 0;
 	while ((str = read_word(f, &i, Ignore, Punct)) != NULL)
 	{
+printf("%s \n\n\n", str);
 		/* step words down by one */
 		free(token[0]);
 		for (i=0; i < Ntoken-1; i++)

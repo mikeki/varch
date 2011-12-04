@@ -118,7 +118,14 @@ class SourceCodesController < ApplicationController
     parametros[:params] = json.encode({:algorithms => algorithms, :files => files})
     
     # Sends HTTP post to python webservice that runs the algorithms
-    response = Net::HTTP.post_form(URI.parse('http://localhost:3001/compare'), parametros)
+    uri = URI.parse('http://localhost:3001/compare')
+    req = Net::HTTP::Post.new(uri.path)
+    req.set_form_data(parametros)
+    response = Net::HTTP.start(uri.host, uri.port) do |http|
+        http.read_timeout = 500
+        http.request(req)
+    end
+    #response = Net::HTTP.post_form(uri, parametros)
     
     # Process the response and saves the similarities on database
     @similarities = Similarity.create_from_response(response, @exercise)
