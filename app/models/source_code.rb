@@ -42,9 +42,10 @@ class SourceCode < ActiveRecord::Base
       Find.find(file_path) do |subfile|
         if subfile != file_path
           if !File.directory?(subfile) && !File.extname(subfile).index('~')
-            @source_code = exercise.source_codes.build
+            student_id = File.dirname(subfile).split("/").last
+            @source_code = exercise.source_codes.find_by_student_id(student_id) || exercise.source_codes.build
             @source_code.language = File.extname(subfile)
-            @source_code.student_id = File.dirname(subfile).split("/").last
+            @source_code.student_id = student_id
             file = File.open(subfile, "r")
             code = ""
             while(line = file.gets)
