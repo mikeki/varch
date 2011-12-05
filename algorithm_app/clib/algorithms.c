@@ -71,7 +71,7 @@ int sherlock_compare(wchar_t *s, wchar_t *n)
 {
 	Sig *a, *b;
     int res;
-	wchar_t **	token, token2;
+	wchar_t **	token, ** token2;
     int i;
     
 	/* create array of wchar_t* and initialise all to NULL */
