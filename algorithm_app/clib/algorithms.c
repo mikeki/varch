@@ -39,8 +39,8 @@ void ld_many(wchar_t *s, wchar_t **others, float *ld_result, int size);
 
 int		Ntoken = 2;
 int		Zerobits = 0;
-unsigned long	zeromask;
-int		ntoken = 0;
+unsigned long	zeromask = 0;
+                //zeromask = (1<<Zerobits)-1;
 
 /* wchar to ignore at start and end of each word */
 wchar_t *		Ignore = L" \t\n";
@@ -66,14 +66,13 @@ int	compare(Sig *, Sig *);
    the 'ignore' or 'punct' wchar is found.
    Uses memory allocation to avoid buffer overflow problems.
 */
-int s_size = 0, curr_pos = 0;
 int sherlock_compare(wchar_t *s, wchar_t *n)
 {
 	Sig *a, *b;
     int res;
 	wchar_t **	token, ** token2;
     int i;
-    
+    //zeromask = (1<<Zerobits)-1;
 	/* create array of wchar_t* and initialise all to NULL */
 	token = malloc(Ntoken * sizeof(wchar_t *));
     token2 = malloc(Ntoken * sizeof(wchar_t *));
@@ -82,11 +81,7 @@ int sherlock_compare(wchar_t *s, wchar_t *n)
 		token[i] = NULL;
         token2[i] = NULL;
     }
-	s_size = wcslen(s);
-	curr_pos = 0;
     a = signature(s, token);
-    s_size = wcslen(n);
-	curr_pos = 0;
     b = signature(n, token2);    
 	res = compare(a, b);
     free(a);
@@ -96,10 +91,12 @@ int sherlock_compare(wchar_t *s, wchar_t *n)
 		free(token[i]);
         free(token2[i]);
     }
+    free(token);
+    free(token2);
     return res;
 }
 
-wchar_t * read_word(wchar_t *f, int *length, wchar_t *ignore, wchar_t *punct)
+wchar_t * read_word(wchar_t *f, int *length, wchar_t *ignore, wchar_t *punct, int *curr_pos)
 {
 	long max;
 	wchar_t *word;
@@ -128,11 +125,11 @@ wchar_t * read_word(wchar_t *f, int *length, wchar_t *ignore, wchar_t *punct)
 
 	/* read wchar_tacters into the buffer, resizing it if necessary */
 	
-	while (s_size > curr_pos && (ch = *(f++)) != '\0') {
+	while ((ch = *(f++)) != '\0') {
         //printf("\tentra while: %lc %ls\n", ch, word);
         //printf("s_size:%d curr_pos:%d pos:%d\n", s_size, curr_pos, pos);
 		is_ignore = (wcschr(ignore, ch) != NULL);
-        curr_pos++;
+        (*curr_pos)++;
 		if (pos == 0) {
 			if (is_ignore)
             {
@@ -219,13 +216,13 @@ Sig * signature(wchar_t *f, wchar_t ** token)
 	wchar_t *str;
 	int i, ntoken;
 	Sig *sig;
-	
+	int curr_pos = 0;
 	/* start loading hash values, after we have Ntoken of them */
 	v = NULL;
 	na = 0;
 	nv = 0;
 	ntoken = 0;
-	while ((str = read_word(f+curr_pos, &i, Ignore, Punct)) != NULL)
+	while ((str = read_word(f+curr_pos, &i, Ignore, Punct, &curr_pos)) != NULL)
 	{
 		/* step words down by one */
 		free(token[0]);
