@@ -122,7 +122,7 @@ class SourceCodesController < ApplicationController
     req = Net::HTTP::Post.new(uri.path)
     req.set_form_data(parametros)
     response = Net::HTTP.start(uri.host, uri.port) do |http|
-        http.read_timeout = 500
+        http.read_timeout = 3600
         http.request(req)
     end
     #response = Net::HTTP.post_form(uri, parametros)
