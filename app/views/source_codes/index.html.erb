@@ -6,9 +6,9 @@
 <fieldset class="el01">
     <%= check_box_tag '-1',"",false,:class=>"checkall"%> Algoritmos:<br />
     <%= check_box_tag "algorithms[]", "1"%>
-    <%= label_tag :algorithms_1, 'Algoritmo 1'%>
-    <%= check_box_tag "algorithms[]", "2"%><%= label_tag :algorithms_2, 'Algoritmo 2'%>
-    <%= check_box_tag "algorithms[]", "3"%><%= label_tag :algorithms_3, 'Algoritmo 3'%>
+    <%= label_tag :algorithms_1, 'Levenshtein'%>
+    <%= check_box_tag "algorithms[]", "2"%><%= label_tag :algorithms_2, 'Sherlock'%>
+    <!--<%= check_box_tag "algorithms[]", "3"%><%= label_tag :algorithms_3, 'Algoritmo 3'%>-->
 </fieldset>
   </div>
   <br />
@@ -46,4 +46,4 @@
 <% end -%>
 <br />
 
-<%= link_to('Nuevo código fuente', new_course_exercise_source_code_path(@exercise.course, @exercise)) %>
+<%= link_to('Nuevo código fuente', new_course_exercise_source_code_path(@exercise.course, @exercise)) %> | <%= link_to "Volver al Ejercicio", course_exercise_path(@exercise.course, @exercise)%>
