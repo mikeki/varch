@@ -37,17 +37,17 @@ void ld_many(wchar_t *s, wchar_t **others, float *ld_result, int size);
 #include <string.h>
 #include <stdio.h>
 
-int		Ntoken = 1;
+int		Ntoken = 2;
 int		Zerobits = 0;
 unsigned long	zeromask;
 int		ntoken = 0;
 
 /* wchar to ignore at start and end of each word */
-wchar_t *		Ignore = L" \t\n,.<>/?;:'\"`~[]{}\\|!@#$%^&*()-+_=";
+wchar_t *		Ignore = L" \t\n";
 
 /* wchar to treat as word-separators or words on their own */
 wchar_t *		Punct_full = L"";
-wchar_t *		Punct = L"";
+wchar_t *		Punct = L",.<>/?;:'\"`~[]{}\\|!@#$%^&*()-+_=";
 
 typedef struct Sig Sig;
 struct Sig
@@ -91,6 +91,11 @@ int sherlock_compare(wchar_t *s, wchar_t *n)
 	res = compare(a, b);
     free(a);
     free(b);
+    for (i=0; i < Ntoken; i++)
+    {
+		free(token[i]);
+        free(token2[i]);
+    }
     return res;
 }
 
@@ -102,7 +107,6 @@ wchar_t * read_word(wchar_t *f, int *length, wchar_t *ignore, wchar_t *punct)
 	wchar_t *c;
 	int ch, is_ignore, is_punct;
 
-
 	/* check for EOF first */
 	if (*f == '\0') {
 			length = 0;
@@ -113,6 +117,7 @@ wchar_t * read_word(wchar_t *f, int *length, wchar_t *ignore, wchar_t *punct)
 	pos = 0;
 	max = 128;
 	word = malloc(sizeof(wchar_t) * max);
+    memset(word, '\0', max);
 	c = & word[pos];
 
 	/* initialise some defaults */
@@ -124,18 +129,28 @@ wchar_t * read_word(wchar_t *f, int *length, wchar_t *ignore, wchar_t *punct)
 	/* read wchar_tacters into the buffer, resizing it if necessary */
 	
 	while (s_size > curr_pos && (ch = *(f++)) != '\0') {
+        //printf("\tentra while: %lc %ls\n", ch, word);
+        //printf("s_size:%d curr_pos:%d pos:%d\n", s_size, curr_pos, pos);
 		is_ignore = (wcschr(ignore, ch) != NULL);
         curr_pos++;
 		if (pos == 0) {
 			if (is_ignore)
+            {
+                //printf("is_ignore && pos == 0: \"%lc\"\n", ch);
 				/* ignorable wchar_t found at start, skip it */
 				continue;
+            }
 		}
 		if (is_ignore)
+        {
 			/* ignorable wchar_t found after start, stop */
+            //printf("\noooh: %ls\n\n\n", f);
+            //printf("is_ignore: \"%lc\", to give \"%ls\"\n", ch, word);
 			break;
+        }
 		is_punct = (wcschr(punct, ch) != NULL);
 		if (is_punct && (pos > 0)) {
+            //printf("is_punct && (pos > 0): \"%lc\"\n", ch);
 			f--;
 			break;
 		}
@@ -143,7 +158,10 @@ wchar_t * read_word(wchar_t *f, int *length, wchar_t *ignore, wchar_t *punct)
 		c++;
 		pos++;
 		if (is_punct)
+        {
+            //printf("is_punct: \"%lc\"\n", ch);
 			break;
+        }
 		if (pos == max) {
 				/* realloc buffer twice the size */
 				max += max;
@@ -151,7 +169,7 @@ wchar_t * read_word(wchar_t *f, int *length, wchar_t *ignore, wchar_t *punct)
 				c = & word[pos];
 		}
 	}
-	
+	//printf("\nSalgo del while\n");
 	/* set length and check for EOF condition */
 	*length = pos;
 	if (pos == 0) {
@@ -207,9 +225,8 @@ Sig * signature(wchar_t *f, wchar_t ** token)
 	na = 0;
 	nv = 0;
 	ntoken = 0;
-	while ((str = read_word(f, &i, Ignore, Punct)) != NULL)
+	while ((str = read_word(f+curr_pos, &i, Ignore, Punct)) != NULL)
 	{
-printf("%s \n\n\n", str);
 		/* step words down by one */
 		free(token[0]);
 		for (i=0; i < Ntoken-1; i++)
@@ -281,8 +298,8 @@ int compare(Sig *s0, Sig *s1)
 		return 100;	/* perfect match if all hash codes match */
 
 	nsimilar = nboth / 2;
-	return 100 * nsimilar / (s0->nval + s1->nval - nsimilar);
-    //return 100 * (nsimilar + nsimilar) / (s0->nval + s1->nval);
+	//return 100 * nsimilar / (s0->nval + s1->nval - nsimilar);
+    return 100 * (nsimilar + nsimilar) / (s0->nval + s1->nval);
 }
 
 void ld_many(wchar_t *s, wchar_t **others, float *ld_result, int size)
