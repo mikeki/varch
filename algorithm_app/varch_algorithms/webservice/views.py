@@ -1,9 +1,14 @@
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from multiprocessing import Pool
 import ctypes
 try: import simplejson as json
 except ImportError: import json
 import threading
+# Monkey Patch to threading __DummyThread
+threading._DummyThread._Thread__stop = lambda x: 42
+import requests
+
 
 #The evils of hardcoding the algorithms library! Put it on the settings NAO :O
 algorithms = ctypes.cdll.LoadLibrary("../clib/libalgorithms.so")
@@ -20,14 +25,17 @@ algorithms.sherlock_compare.args = [ctypes.c_wchar_p, ctypes.c_wchar_p]
 #          ]
 #       }
 #   ]
+running_threads = []
+result = []
+callback_url = ""
 @csrf_exempt
 def compare(request):
-    req = json.loads(request.POST['params'])
+    req = json.loads(request.raw_post_data)['params']
     lock = threading.RLock()
-    result = []
-    if 'files' not in req or 'algorithms' not in req:
+    if 'files' not in req or 'algorithms' not in req or 'url' not in req:
         return HttpResponse(json.dumps({'error' : 'Wrong data: ' + str(req)}))
     files = req['files']
+    callback_url = req['url']
     for f in files:
         #get rid off spaces and make it a c-valid parameter
         #keep a copy for the third algorithm which requires line jumps and such
@@ -39,7 +47,6 @@ def compare(request):
             print errstr
     if len(files) < 2: 
         return HttpResponse(json.dumps({'error' : 'Just one file: ' + str(req)}))
-    running_threads = []
     for ci, curr_file in enumerate(files):
         to_compare = map(lambda p: p[1], filter(lambda x: x[0] > ci, enumerate(files)))
         if 'code' not in curr_file:
@@ -48,9 +55,27 @@ def compare(request):
         comparator = Comparator(curr_file, to_compare, result, lock, req)
         running_threads.append(comparator)
         comparator.start()
+
+    pool = Pool()    # start a worker process
+    pool.apply_async(wait_for_threads, args=(callback_url,), callback=post_result) # Evaluate "wait_for_threads()" async calling callback when done
+    #return HttpResponse(json.dumps(result), mimetype='application/javascript')
+    return HttpResponse('{status:200}', mimetype='application/javascript')
+
+def wait_for_threads(callback_url):
+    print "WAIT_FOR_THREADS"
     for t in running_threads:
         t.join()
-    return HttpResponse(json.dumps(result), mimetype='application/javascript')
+    print "WAIT_FOR_THREADS FINISHED"
+    return (result, callback_url)
+
+def post_result(wait_for_threads_result):
+    print "POST_RESULT"
+    payload = wait_for_threads_result[0]
+    callback_url = wait_for_threads_result[1]
+    headers = {'content-type': 'application/json'}
+    print "CALLBACK " + callback_url
+    # POST to server 
+    response = requests.post(callback_url, data=json.dumps(payload), headers=headers)
 
 class Comparator(threading.Thread):
     def __init__(self, curr_file, to_compare, result, lock, req):
