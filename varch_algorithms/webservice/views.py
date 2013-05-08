@@ -52,58 +52,26 @@ def compare(request):
         if 'code' not in curr_file:
             return HttpResponse(json.dumps({'error' : 'Wrong data: ' + str(req)}))
         similarities = []
-        comparator = Comparator(curr_file, to_compare, result, lock, req)
-        running_threads.append(comparator)
-        comparator.start()
+        comparison(curr_file, to_compare, req)
 
-    pool = Pool()    # start a worker process
-    pool.apply_async(wait_for_threads, args=(callback_url,), callback=post_result) # Evaluate "wait_for_threads()" async calling callback when done
-    #return HttpResponse(json.dumps(result), mimetype='application/javascript')
+    headers = {'content-type': 'application/json'}
+    response = requests.post(callback_url, data=json.dumps(result), headers=headers)
     return HttpResponse('{status:200}', mimetype='application/javascript')
 
-def wait_for_threads(callback_url):
-    print "WAIT_FOR_THREADS"
-    for t in running_threads:
-        t.join()
-    print "WAIT_FOR_THREADS FINISHED"
-    return (result, callback_url)
+def comparison(curr_file, to_compare, req):
+    similarities = []
+    for tc in to_compare:
+        curr_similarity = {'id' : tc['id'], 'similarity' : {}}
+        if '1' in req['algorithms']:
+            curr_similarity['similarity']['1'] = algorithms.ld_compare(curr_file['code'], tc['code'])
+        if '2' in req['algorithms']:
+            #print curr_file['code']
+            #print tc['code']
+            curr_similarity['similarity']['2'] = algorithms.sherlock_compare(curr_file['code'], tc['code'])
+            #print curr_similarity['similarity']['2']
 
-def post_result(wait_for_threads_result):
-    print "POST_RESULT"
-    payload = wait_for_threads_result[0]
-    callback_url = wait_for_threads_result[1]
-    headers = {'content-type': 'application/json'}
-    print "CALLBACK " + callback_url
-    # POST to server 
-    response = requests.post(callback_url, data=json.dumps(payload), headers=headers)
+        #if '3' in self.req['algorithms']:
+        #    curr_similarity['similarity']['3'] = algorithms.varch_compare(curr_file['code2'], tc['code2'])
+        similarities.append(curr_similarity)
+    result.append({'id' : curr_file['id'], 'similarities' : similarities})
 
-class Comparator(threading.Thread):
-    def __init__(self, curr_file, to_compare, result, lock, req):
-        self.curr_file = curr_file
-        self.to_compare = to_compare
-        self.result = result
-        self.lock = lock
-        self.req = req
-        threading.Thread.__init__(self)
-    
-    def run(self):
-        curr_file = self.curr_file
-        to_compare = self.to_compare
-        result = self.result
-        similarities = []
-        for tc in to_compare:
-            curr_similarity = {'id' : tc['id'], 'similarity' : {}}
-            if '1' in self.req['algorithms']:
-                curr_similarity['similarity']['1'] = algorithms.ld_compare(curr_file['code'], tc['code'])
-            if '2' in self.req['algorithms']:
-                #print curr_file['code']
-                #print tc['code']
-                curr_similarity['similarity']['2'] = algorithms.sherlock_compare(curr_file['code'], tc['code'])
-                #print curr_similarity['similarity']['2']
-                
-            #if '3' in self.req['algorithms']:
-            #    curr_similarity['similarity']['3'] = algorithms.varch_compare(curr_file['code2'], tc['code2'])
-            similarities.append(curr_similarity)
-        self.lock.acquire()
-        result.append({'id' : curr_file['id'], 'similarities' : similarities})
-        self.lock.release()
