@@ -26,10 +26,10 @@ algorithms.sherlock_compare.args = [ctypes.c_wchar_p, ctypes.c_wchar_p]
 #       }
 #   ]
 running_threads = []
-result = []
 callback_url = ""
 @csrf_exempt
 def compare(request):
+    result = []
     req = json.loads(request.raw_post_data)['params']
     lock = threading.RLock()
     if 'files' not in req or 'algorithms' not in req or 'url' not in req:
@@ -52,13 +52,15 @@ def compare(request):
         if 'code' not in curr_file:
             return HttpResponse(json.dumps({'error' : 'Wrong data: ' + str(req)}))
         similarities = []
-        comparison(curr_file, to_compare, req)
+        comparison(curr_file, to_compare, req, result)
 
     headers = {'content-type': 'application/json'}
+    print callback_url
+    print json.dumps(result)
     response = requests.post(callback_url, data=json.dumps(result), headers=headers)
-    return HttpResponse('{status:200}', mimetype='application/javascript')
+    return HttpResponse(status=200)
 
-def comparison(curr_file, to_compare, req):
+def comparison(curr_file, to_compare, req, result):
     similarities = []
     for tc in to_compare:
         curr_similarity = {'id' : tc['id'], 'similarity' : {}}
